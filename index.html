@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>WEST FUSION AI — その作業、まだ人がやっていませんか。</title>
+<style>
+  :root{
+    /* 帯(ヘッダー/連絡先)は両テーマとも常に濃紺で固定する。
+       文字色トークン(--ink)と背景トークン(--band)を分けないと、
+       ダークテーマで紺が反転して白文字が白背景に乗る。 */
+    --band:#0F2436;
+    --band-fg:#C3D0DA;
+    --band-fg-strong:#FFFFFF;
+    --band-muted:#93A5B3;
+    --band-rule:rgba(255,255,255,.15);
+
+    --ink:#0F2436;
+    --ink-2:#17324A;
+    --paper:#FBFBFA;
+    --rust:#D2551F;
+    --rust-soft:#F0EAE5;
+    --steel:#5F7386;
+    --steel-pale:#9DACB9;
+    --rule:rgba(15,36,54,.12);
+    --card:#FFFFFF;
+    --jp:"Yu Gothic","游ゴシック体",YuGothic,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+    --en:"Helvetica Neue",Arial,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--paper:#101820;--card:#18222C;--ink:#E6ECF1;--ink-2:#FFFFFF;--steel:#9BAEBE;--steel-pale:#6D8090;--rule:rgba(255,255,255,.12);--rust-soft:#2A2018;}
+  }
+  :root[data-theme="dark"]{--paper:#101820;--card:#18222C;--ink:#E6ECF1;--ink-2:#FFFFFF;--steel:#9BAEBE;--steel-pale:#6D8090;--rule:rgba(255,255,255,.12);--rust-soft:#2A2018;}
+  :root[data-theme="light"]{--paper:#FBFBFA;--card:#FFFFFF;--ink:#0F2436;--ink-2:#17324A;--steel:#5F7386;--steel-pale:#9DACB9;--rule:rgba(15,36,54,.12);--rust-soft:#F0EAE5;}
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--jp);line-height:1.85;
+    font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:44rem;margin:0 auto;padding:0 1.25rem 4rem}
+
+  /* hero */
+  header{
+    background:var(--band);color:var(--band-fg);
+    padding:2.75rem 0 2.5rem;margin-bottom:2.5rem;
+    border-bottom:4px solid var(--rust);
+  }
+  header .wrap{padding-bottom:0}
+  .brand{
+    font-family:var(--en);font-weight:700;font-size:.8rem;
+    letter-spacing:.3em;color:var(--band-fg-strong);margin:0 0 1.75rem;
+  }
+  .brand span{color:var(--rust)}
+  h1{
+    font-size:clamp(1.55rem,5.6vw,2.35rem);line-height:1.45;margin:0 0 1rem;
+    letter-spacing:.02em;text-wrap:balance;color:var(--band-fg-strong);font-weight:700;
+  }
+  .lede{margin:0;color:var(--band-muted);font-size:.98rem;max-width:34rem}
+  .who{
+    margin-top:1.75rem;padding-top:1.25rem;
+    border-top:1px solid var(--band-rule);
+    font-size:.9rem;color:var(--band-fg);
+  }
+  .who b{color:var(--band-fg-strong);font-size:1.05rem;letter-spacing:.06em}
+
+  h2{
+    font-size:.78rem;font-family:var(--en);letter-spacing:.2em;text-transform:uppercase;
+    color:var(--rust);margin:3rem 0 1.1rem;font-weight:700;
+  }
+  h2:first-of-type{margin-top:0}
+
+  /* checklist */
+  .check{
+    background:var(--rust-soft);border-left:4px solid var(--rust);
+    padding:1.4rem 1.5rem;margin:0;
+  }
+  .check p{margin:0 0 .9rem;font-weight:700;font-size:1.02rem}
+  .check ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem}
+  .check li{position:relative;padding-left:1.7rem;font-size:.95rem;line-height:1.65}
+  .check li::before{
+    content:"";position:absolute;left:0;top:.45em;
+    width:.85rem;height:.85rem;border:1.5px solid var(--rust);
+  }
+
+  /* proof cards */
+  .proofs{display:flex;flex-direction:column;gap:1rem}
+  .proof{
+    background:var(--card);border:1px solid var(--rule);
+    padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:.65rem;
+  }
+  .tag{
+    display:inline-block;align-self:flex-start;
+    font-size:.68rem;letter-spacing:.12em;font-weight:700;
+    padding:.18rem .55rem;border:1px solid var(--rust);color:var(--rust);
+  }
+  .tag.live{border-color:var(--steel);color:var(--steel)}
+  .proof h3{margin:0;font-size:1.12rem;line-height:1.5;letter-spacing:.01em}
+  .proof p{margin:0;font-size:.94rem;color:var(--steel);line-height:1.8}
+  .proof p b{color:var(--ink);font-weight:700}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:.4rem 1.25rem;
+    padding-top:.6rem;border-top:1px dashed var(--rule);
+    font-size:.82rem;color:var(--steel-pale);font-family:var(--en);
+  }
+  .meta span b{color:var(--steel);font-family:var(--jp)}
+
+  /* tools */
+  .tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.5rem;margin:0;padding:0;list-style:none}
+  .tools li{
+    font-size:.9rem;color:var(--steel);padding:.55rem .8rem;
+    background:var(--card);border:1px solid var(--rule);
+  }
+  .tools li b{color:var(--ink);font-weight:700;display:block;font-size:.94rem}
+  .note{font-size:.86rem;color:var(--steel-pale);margin:.9rem 0 0}
+
+  /* demo links */
+  .demos{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.2rem}
+  .demo{
+    display:inline-flex;align-items:center;gap:.5rem;
+    text-decoration:none;font-size:.88rem;font-weight:700;
+    color:var(--ink);background:transparent;
+    border:1.5px solid var(--ink);padding:.5rem .9rem;
+    transition:background .15s ease,color .15s ease;
+  }
+  .demo::after{content:"↗";font-family:var(--en);color:var(--rust);font-weight:400}
+  .demo:hover,.demo:focus-visible{background:var(--ink);color:var(--paper)}
+  .demo:hover::after,.demo:focus-visible::after{color:var(--rust)}
+  .demo:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){.demo{transition:none}}
+
+  /* how */
+  .steps{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:1.15rem}
+  .steps > li{
+    counter-increment:s;
+    display:grid;grid-template-columns:1.9rem minmax(0,1fr);
+    column-gap:1rem;align-items:baseline;
+  }
+  .steps > li::before{
+    content:counter(s);font-family:var(--en);font-weight:700;
+    color:var(--rust);font-size:1.1rem;
+  }
+  .steps .step-body{min-width:0}
+  .steps b{display:block;font-size:1rem;margin-bottom:.15rem}
+  .steps span{display:block;font-size:.92rem;color:var(--steel);line-height:1.75}
+
+  /* contact */
+  .contact{
+    margin-top:3rem;background:var(--band);color:var(--band-fg);
+    padding:2rem 1.75rem;display:flex;flex-direction:column;gap:1rem;
+  }
+  .contact h2{color:var(--rust);margin:0}
+  .contact p{margin:0;color:var(--band-muted);font-size:.92rem}
+  .contact p b{color:var(--band-fg-strong)}
+  .contact a{
+    color:var(--band-fg-strong);text-decoration:none;border-bottom:1px solid var(--rust);
+    font-family:var(--en);font-size:1.02rem;word-break:break-all;
+  }
+  .contact a:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+  .rows{display:flex;flex-direction:column;gap:.7rem}
+  .rows div{display:flex;gap:.9rem;align-items:baseline;flex-wrap:wrap}
+  .rows .k{
+    font-family:var(--en);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--band-muted);min-width:5.5rem;
+  }
+  footer{margin-top:2rem;font-size:.78rem;color:var(--steel-pale);text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="brand">WEST FUSION <span>AI</span></p>
+    <h1>その作業、<br>まだ人がやっていませんか。</h1>
+    <p class="lede">議事録の書き起こし、電話内容のExcel転記、見積の二重入力。<br>「昔からこうだから」で残っている手作業を、動くもので消します。</p>
+    <p class="who"><b>西中間 英樹</b>　WEST FUSION AI 代表<br>製造業23年（機構設計18年・特許46件・海外赴任3年）／現役の管理職</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="check">
+    <p>ひとつでも当てはまれば、話す価値があります。</p>
+    <ul>
+      <li>会議・打合せの議事録を、いまも手で書き起こしている</li>
+      <li>電話や問い合わせの内容を、あとから手でExcelに転記している</li>
+      <li>見積・請求のたびに、同じ情報を何度も打ち直している</li>
+      <li>「AIを入れろ」と言われたが、何から手をつければいいか分からない</li>
+    </ul>
+  </section>
+
+  <h2>作って、納品したもの</h2>
+  <div class="proofs">
+
+    <article class="proof">
+      <span class="tag">受注・納品済</span>
+      <h3>電話システム × 業務システムの連携</h3>
+      <p>電話対応が業務の中心にある企業様向け。<b>クラウド電話（Zoom Phone）の着信・通話履歴・録音を、業務システムへ自動で流し込む</b>仕組みを設計・実装し、納品しました。電話のあとに「誰と、何を話したか」を人が入力する時間が、まるごと不要になります。</p>
+      <div class="meta">
+        <span><b>Zoom Phone API</b></span>
+        <span><b>Python / Webhook</b></span>
+        <span><b>2026年 受注 → 納品完了</b></span>
+      </div>
+    </article>
+
+    <article class="proof">
+      <span class="tag live">自社で毎日稼働中</span>
+      <h3>打合せ音声 → 議事録の全自動化</h3>
+      <p>スマホで録音するだけ。あとはPCが勝手に文字起こしし、要点をまとめます。<b>人が触る工程はゼロ</b>。26分の会議が、放っておく間に議事録になります。オンライン会議は「自分の声」と「相手の声」を分けて記録し、誰の発言かまで残します。</p>
+      <p>同じ仕組みを、<b>70代で現役の父のために</b>も作りました。父の操作は「録音を貼って、閉じる」だけ。<b>覚えることをゼロにする</b>のが、いちばん難しく、いちばん効きます。</p>
+      <div class="demos">
+        <a class="demo" href="https://westfusionai.github.io/ai-meeting-memo-father-demo/">父のための議事録 — デモを見る</a>
+      </div>
+      <div class="meta">
+        <span><b>音声認識（手元のPCで処理）</b></span>
+        <span><b>実測: 音声の約半分の時間で完了</b></span>
+        <span><b>録音を外に出さない構成も可</b></span>
+      </div>
+    </article>
+
+    <article class="proof">
+      <span class="tag live">実運用中</span>
+      <h3>メール・議事録 → 週報とタスクが勝手に埋まる</h3>
+      <p>一週間分のメールとチャットをAIが読み、<b>週報・チームサマリー・タスク一覧を金曜に自動生成</b>します。「report_final_v3.xlsx」を金曜の夜に開く時間が、まるごと消えます。特定のAIベンダーに縛られない設計です。</p>
+      <div class="demos">
+        <a class="demo" href="https://westfusionai.github.io/email-thread-demo/">メール → 週報 — デモを見る</a>
+        <a class="demo" href="https://westfusionai.github.io/weekly-report-generator-demo/">議事録 → 週報 — デモを見る</a>
+      </div>
+      <div class="meta">
+        <span><b>Outlook / SharePoint / Power Automate</b></span>
+        <span><b>既存のMicrosoft 365だけで完結</b></span>
+      </div>
+    </article>
+
+    <article class="proof">
+      <span class="tag live">14本</span>
+      <h3>現場の定型作業を消す業務ツール</h3>
+      <p>受注のために作ったものではなく、<b>自分の現場で「面倒だ」と思った瞬間に作ったもの</b>です。思いついてから動くものが出るまで、多くは数日。この速さ自体が、いちばんお見せしたい実力です。</p>
+      <ul class="tools">
+        <li><b>タスク管理アプリ（スマホ）</b>毎朝、その日のタスクが自動で並ぶ</li>
+        <li><b>AI電話受付</b>人が出る前に用件を聞き取る</li>
+        <li><b>案件の自動収集 → 応募文生成</b>Python / AI</li>
+        <li><b>SNSの投稿文を自動生成・自動投稿</b>毎日の運用を無人化</li>
+      </ul>
+      <div class="demos">
+        <a class="demo" href="https://westfusionai.github.io/ceo-tasks-demo/">スマホのタスク管理 — デモを見る</a>
+      </div>
+      <p class="note">ほか、LINE Bot・動画の自動生成・離れた家族のPC設定支援など。すべて実際に動いています。</p>
+    </article>
+
+  </div>
+
+  <h2>進め方</h2>
+  <ol class="steps">
+    <li><div class="step-body"><b>まず、困りごとを聞かせてください</b><span>初回相談は無料・オンライン30分。ヒアリングだけで終わっても構いません。</span></div></li>
+    <li><div class="step-body"><b>「やらないほうがいい」も言います</b><span>AIを入れる必要がない業務には、そう申し上げます。設計者として23年、無駄な作り込みが何を生むかを見てきました。</span></div></li>
+    <li><div class="step-body"><b>小さく作って、見せる</b><span>提案書ではなく動くものを見てから、進めるかどうかを判断してください。</span></div></li>
+  </ol>
+
+  <section class="contact">
+    <h2>Contact</h2>
+    <p>本業を持ちながら運営しています。<b>平日夜・週末</b>の対応が中心です（平日日中の即応はできません）。<br>お急ぎでなければ、遠慮なくご連絡ください。</p>
+    <div class="rows">
+      <div><span class="k">Mail</span><a href="mailto:west.fusion.ai@gmail.com">west.fusion.ai@gmail.com</a></div>
+      <div><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/hideki-west-4b4151403/">linkedin.com/in/hideki-west-4b4151403</a></div>
+    </div>
+  </section>
+
+  <footer>WEST FUSION AI ／ 西中間 英樹　—　2026-07-22 北大阪商工会議所 交流会でお会いした方へ</footer>
+</main>
+
+</body>
+</html>
