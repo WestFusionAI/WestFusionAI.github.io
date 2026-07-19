@@ -42,8 +42,19 @@
   }
   .wrap{max-width:44rem;margin:0 auto;padding:0 1.25rem 4rem}
 
+  /* language toggle */
+  .lang{
+    position:absolute;top:1rem;right:1.25rem;z-index:2;
+    display:flex;gap:.15rem;font-family:var(--en);font-size:.72rem;font-weight:700;letter-spacing:.08em;
+  }
+  .lang a{
+    color:var(--band-muted);text-decoration:none;padding:.2rem .5rem;border:1px solid var(--band-rule);
+  }
+  .lang a[aria-current="true"]{color:var(--band-fg-strong);border-color:var(--rust);background:rgba(210,85,31,.15)}
+
   /* hero */
   header{
+    position:relative;
     background:var(--band);color:var(--band-fg);
     padding:2.75rem 0 2.5rem;margin-bottom:2.5rem;
     border-bottom:4px solid var(--rust);
@@ -171,6 +182,10 @@
 <body>
 
 <header>
+  <nav class="lang" aria-label="Language">
+    <a href="/" hreflang="ja" aria-current="true">日本語</a>
+    <a href="/en/" hreflang="en">EN</a>
+  </nav>
   <div class="wrap">
     <p class="brand">WEST FUSION <span>AI</span></p>
     <h1>その作業、<br>まだ人がやっていませんか。</h1>

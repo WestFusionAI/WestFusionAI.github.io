@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>WEST FUSION AI — Is someone still doing that work by hand?</title>
+<meta property="og:title" content="WEST FUSION AI — automation & voice-AI that staff actually use">
+<meta property="og:description" content="A Japan-based engineer who ships production automation and voice-AI systems, from discovery call to client acceptance.">
+<meta property="og:locale" content="en_US">
+<style>
+  :root{
+    --band:#0F2436;
+    --band-fg:#C3D0DA;
+    --band-fg-strong:#FFFFFF;
+    --band-muted:#93A5B3;
+    --band-rule:rgba(255,255,255,.15);
+
+    --ink:#0F2436;
+    --ink-2:#17324A;
+    --paper:#FBFBFA;
+    --rust:#D2551F;
+    --rust-soft:#F0EAE5;
+    --steel:#5F7386;
+    --steel-pale:#9DACB9;
+    --rule:rgba(15,36,54,.12);
+    --card:#FFFFFF;
+    --jp:"Yu Gothic","游ゴシック体",YuGothic,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+    --en:"Helvetica Neue",Arial,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--paper:#101820;--card:#18222C;--ink:#E6ECF1;--ink-2:#FFFFFF;--steel:#9BAEBE;--steel-pale:#6D8090;--rule:rgba(255,255,255,.12);--rust-soft:#2A2018;}
+  }
+  :root[data-theme="dark"]{--paper:#101820;--card:#18222C;--ink:#E6ECF1;--ink-2:#FFFFFF;--steel:#9BAEBE;--steel-pale:#6D8090;--rule:rgba(255,255,255,.12);--rust-soft:#2A2018;}
+  :root[data-theme="light"]{--paper:#FBFBFA;--card:#FFFFFF;--ink:#0F2436;--ink-2:#17324A;--steel:#5F7386;--steel-pale:#9DACB9;--rule:rgba(15,36,54,.12);--rust-soft:#F0EAE5;}
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--en);line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:44rem;margin:0 auto;padding:0 1.25rem 4rem}
+
+  /* language toggle */
+  .lang{
+    position:absolute;top:1rem;right:1.25rem;z-index:2;
+    display:flex;gap:.15rem;font-family:var(--en);font-size:.72rem;font-weight:700;letter-spacing:.08em;
+  }
+  .lang a{
+    color:var(--band-muted);text-decoration:none;padding:.2rem .5rem;border:1px solid var(--band-rule);
+  }
+  .lang a[aria-current="true"]{color:var(--band-fg-strong);border-color:var(--rust);background:rgba(210,85,31,.15)}
+
+  /* hero */
+  header{
+    position:relative;
+    background:var(--band);color:var(--band-fg);
+    padding:2.75rem 0 2.5rem;margin-bottom:2.5rem;
+    border-bottom:4px solid var(--rust);
+  }
+  header .wrap{padding-bottom:0}
+  .brand{
+    font-family:var(--en);font-weight:700;font-size:.8rem;
+    letter-spacing:.3em;color:var(--band-fg-strong);margin:0 0 1.75rem;
+  }
+  .brand span{color:var(--rust)}
+  h1{
+    font-size:clamp(1.6rem,5.4vw,2.4rem);line-height:1.3;margin:0 0 1rem;
+    letter-spacing:.01em;text-wrap:balance;color:var(--band-fg-strong);font-weight:700;
+  }
+  .lede{margin:0;color:var(--band-muted);font-size:1rem;max-width:34rem}
+  .who{
+    margin-top:1.75rem;padding-top:1.25rem;
+    border-top:1px solid var(--band-rule);
+    font-size:.92rem;color:var(--band-fg);
+  }
+  .who b{color:var(--band-fg-strong);font-size:1.02rem;letter-spacing:.04em}
+
+  h2{
+    font-size:.78rem;font-family:var(--en);letter-spacing:.2em;text-transform:uppercase;
+    color:var(--rust);margin:3rem 0 1.1rem;font-weight:700;
+  }
+  h2:first-of-type{margin-top:0}
+
+  /* checklist */
+  .check{
+    background:var(--rust-soft);border-left:4px solid var(--rust);
+    padding:1.4rem 1.5rem;margin:0;
+  }
+  .check p{margin:0 0 .9rem;font-weight:700;font-size:1.02rem}
+  .check ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem}
+  .check li{position:relative;padding-left:1.7rem;font-size:.95rem;line-height:1.55}
+  .check li::before{
+    content:"";position:absolute;left:0;top:.4em;
+    width:.85rem;height:.85rem;border:1.5px solid var(--rust);
+  }
+
+  /* proof cards */
+  .proofs{display:flex;flex-direction:column;gap:1rem}
+  .proof{
+    background:var(--card);border:1px solid var(--rule);
+    padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:.65rem;
+  }
+  .tag{
+    display:inline-block;align-self:flex-start;
+    font-size:.68rem;letter-spacing:.12em;font-weight:700;
+    padding:.18rem .55rem;border:1px solid var(--rust);color:var(--rust);text-transform:uppercase;
+  }
+  .tag.live{border-color:var(--steel);color:var(--steel)}
+  .proof h3{margin:0;font-size:1.12rem;line-height:1.4;letter-spacing:.01em}
+  .proof p{margin:0;font-size:.94rem;color:var(--steel);line-height:1.7}
+  .proof p b{color:var(--ink);font-weight:700}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:.4rem 1.25rem;
+    padding-top:.6rem;border-top:1px dashed var(--rule);
+    font-size:.82rem;color:var(--steel-pale);font-family:var(--en);
+  }
+  .meta span b{color:var(--steel)}
+
+  /* tools */
+  .tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.5rem;margin:0;padding:0;list-style:none}
+  .tools li{
+    font-size:.9rem;color:var(--steel);padding:.55rem .8rem;
+    background:var(--card);border:1px solid var(--rule);
+  }
+  .tools li b{color:var(--ink);font-weight:700;display:block;font-size:.94rem}
+  .note{font-size:.86rem;color:var(--steel-pale);margin:.9rem 0 0}
+
+  /* demo links */
+  .demos{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.2rem}
+  .demo{
+    display:inline-flex;align-items:center;gap:.5rem;
+    text-decoration:none;font-size:.88rem;font-weight:700;
+    color:var(--ink);background:transparent;
+    border:1.5px solid var(--ink);padding:.5rem .9rem;
+    transition:background .15s ease,color .15s ease;
+  }
+  .demo::after{content:"↗";font-family:var(--en);color:var(--rust);font-weight:400}
+  .demo:hover,.demo:focus-visible{background:var(--ink);color:var(--paper)}
+  .demo:hover::after,.demo:focus-visible::after{color:var(--rust)}
+  .demo:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){.demo{transition:none}}
+
+  /* how */
+  .steps{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:1.15rem}
+  .steps > li{
+    counter-increment:s;
+    display:grid;grid-template-columns:1.9rem minmax(0,1fr);
+    column-gap:1rem;align-items:baseline;
+  }
+  .steps > li::before{
+    content:counter(s);font-family:var(--en);font-weight:700;
+    color:var(--rust);font-size:1.1rem;
+  }
+  .steps .step-body{min-width:0}
+  .steps b{display:block;font-size:1rem;margin-bottom:.15rem}
+  .steps span{display:block;font-size:.92rem;color:var(--steel);line-height:1.65}
+
+  /* contact */
+  .contact{
+    margin-top:3rem;background:var(--band);color:var(--band-fg);
+    padding:2rem 1.75rem;display:flex;flex-direction:column;gap:1rem;
+  }
+  .contact h2{color:var(--rust);margin:0}
+  .contact p{margin:0;color:var(--band-muted);font-size:.92rem}
+  .contact p b{color:var(--band-fg-strong)}
+  .contact a{
+    color:var(--band-fg-strong);text-decoration:none;border-bottom:1px solid var(--rust);
+    font-family:var(--en);font-size:1.02rem;word-break:break-all;
+  }
+  .contact a:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+  .rows{display:flex;flex-direction:column;gap:.7rem}
+  .rows div{display:flex;gap:.9rem;align-items:baseline;flex-wrap:wrap}
+  .rows .k{
+    font-family:var(--en);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--band-muted);min-width:5.5rem;
+  }
+  footer{margin-top:2rem;font-size:.78rem;color:var(--steel-pale);text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="lang" aria-label="Language">
+    <a href="/" hreflang="ja">日本語</a>
+    <a href="/en/" hreflang="en" aria-current="true">EN</a>
+  </nav>
+  <div class="wrap">
+    <p class="brand">WEST FUSION <span>AI</span></p>
+    <h1>Is someone still doing that work by hand?</h1>
+    <p class="lede">Transcribing meeting notes. Re-typing call details into a spreadsheet. Entering the same quote twice. I remove the manual work that survives only because "that's how it's always been done" — with something that actually runs.</p>
+    <p class="who"><b>West — WEST FUSION AI</b><br>A Japan-based automation engineer with a manufacturing project-management background. I scope, build and deliver — from discovery call to client acceptance.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="check">
+    <p>If even one of these sounds familiar, it's worth a conversation.</p>
+    <ul>
+      <li>Your team still transcribes meetings and calls by hand</li>
+      <li>Call and inquiry details get re-keyed into a spreadsheet afterward</li>
+      <li>The same customer info is retyped for every quote and invoice</li>
+      <li>You were told to "adopt AI" but don't know where to start</li>
+    </ul>
+  </section>
+
+  <h2>What I've built &amp; delivered</h2>
+  <div class="proofs">
+
+    <article class="proof">
+      <span class="tag">Delivered · client-accepted</span>
+      <h3>Phone system × business-system integration</h3>
+      <p>For a Japan-based systems company where phone handling is central to the business, I designed and delivered a system that <b>automatically feeds cloud-phone (Zoom Phone) call events, history and recordings into their business system</b> — including webhook signature verification and linking each call back to the right customer record. It <b>passed the client's formal acceptance review.</b> The time staff spent typing up "who called and what was said" disappears.</p>
+      <div class="meta">
+        <span><b>Zoom Phone API</b></span>
+        <span><b>Python / Webhook</b></span>
+        <span><b>Delivered 2026</b></span>
+      </div>
+    </article>
+
+    <article class="proof">
+      <span class="tag live">Live demo</span>
+      <h3>Bilingual AI voice receptionist (JA / EN)</h3>
+      <p>A self-built voice AI that <b>answers a call, understands the request in either Japanese or English, and writes a confirmed booking into a CRM in real time.</b> I built it end to end — speech in/out, the conversation logic, and the booking write-back. See it work, don't just take my word for it:</p>
+      <div class="demos">
+        <a class="demo" href="https://www.youtube.com/watch?v=YRxsfRdM25s">Watch the demo (English)</a>
+        <a class="demo" href="https://www.youtube.com/watch?v=N2meY0k7U08">日本語版</a>
+      </div>
+      <div class="meta">
+        <span><b>Voice AI / IVR-style flow</b></span>
+        <span><b>Live CRM booking write-back</b></span>
+      </div>
+    </article>
+
+    <article class="proof">
+      <span class="tag live">Running daily</span>
+      <h3>Meeting audio → minutes, fully automated</h3>
+      <p>Just record on a phone. The PC transcribes it and writes up the key points on its own — <b>zero human steps.</b> A 26-minute meeting becomes minutes while you leave it alone. Online meetings are captured with your voice and the other party's voice on separate channels, so it's clear who said what. It can also run <b>fully on your own machine</b>, so recordings never leave your network.</p>
+      <div class="demos">
+        <a class="demo" href="https://westfusionai.github.io/ai-meeting-memo-father-demo/">See the demo</a>
+      </div>
+      <div class="meta">
+        <span><b>On-device speech recognition</b></span>
+        <span><b>Measured: done in ~half the audio length</b></span>
+      </div>
+    </article>
+
+    <article class="proof">
+      <span class="tag live">In production</span>
+      <h3>Email &amp; minutes → weekly reports and tasks, filled in for you</h3>
+      <p>AI reads a week of email and chat and <b>auto-generates the weekly report, team summary and task list every Friday.</b> The Friday-night ritual of opening "report_final_v3.xlsx" is gone. Built to work <b>inside a locked-down enterprise Microsoft 365 tenant</b> (premium connectors blocked) — and vendor-neutral, so you're not tied to one AI provider.</p>
+      <div class="demos">
+        <a class="demo" href="https://westfusionai.github.io/email-thread-demo/">Email → report demo</a>
+        <a class="demo" href="https://westfusionai.github.io/weekly-report-generator-demo/">Minutes → report demo</a>
+      </div>
+      <div class="meta">
+        <span><b>Outlook / SharePoint / Power Automate</b></span>
+        <span><b>Runs on existing Microsoft 365</b></span>
+      </div>
+    </article>
+
+    <article class="proof">
+      <span class="tag live">14 built</span>
+      <h3>Operational tools that erase routine work</h3>
+      <p>None of these were built to win a contract — <b>each was built the moment I hit the friction myself.</b> From idea to something running is usually a few days. That speed is the single thing I most want to show you.</p>
+      <ul class="tools">
+        <li><b>Task manager (mobile)</b>each morning's tasks line up automatically</li>
+        <li><b>AI phone reception</b>captures the caller's request before a human picks up</li>
+        <li><b>Job auto-collection → application drafting</b>Python / AI</li>
+        <li><b>Social posts auto-written &amp; auto-published</b>daily ops, unattended</li>
+      </ul>
+      <div class="demos">
+        <a class="demo" href="https://westfusionai.github.io/ceo-tasks-demo/">Mobile task manager — demo</a>
+      </div>
+      <p class="note">Also: a LINE bot, automated video generation, remote PC setup for family — all actually running.</p>
+    </article>
+
+  </div>
+
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><div class="step-body"><b>Send me one line about the pain</b><span>"Can AI do something about this task?" — that's enough. No formal brief needed.</span></div></li>
+    <li><div class="step-body"><b>I'll send a short intake sheet</b><span>Just a few questions. Answer what you can, and I'll judge whether it's a good fit.</span></div></li>
+    <li><div class="step-body"><b>I build a small working proof of concept</b><span>Not a proposal deck — something that runs. And if I think you <b>shouldn't</b> build it, I'll tell you honestly, with the reason. My PM background means I've seen what needless over-engineering costs.</span></div></li>
+    <li><div class="step-body"><b>You decide after seeing it work</b><span>We only talk next steps if you like the prototype. I won't push a sale.</span></div></li>
+  </ol>
+
+  <section class="contact">
+    <h2>Contact</h2>
+    <p>I run this alongside a full-time role, so I mainly work <b>evenings (JST) and weekends</b>. I reply within 24 hours. If it isn't urgent, reach out any time.</p>
+    <div class="rows">
+      <div><span class="k">Mail</span><a href="mailto:west.fusion.ai@gmail.com">west.fusion.ai@gmail.com</a></div>
+      <div><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/hideki-west-4b4151403/">linkedin.com/in/hideki-west-4b4151403</a></div>
+    </div>
+  </section>
+
+  <footer>WEST FUSION AI — automation &amp; voice-AI that people actually use.</footer>
+</main>
+
+</body>
+</html>
