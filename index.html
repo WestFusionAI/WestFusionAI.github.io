@@ -177,9 +177,103 @@
     color:var(--band-muted);min-width:5.5rem;
   }
   footer{margin-top:2rem;font-size:.78rem;color:var(--steel-pale);text-align:center}
+
+  /* 業種別ユースケース */
+  .lede2{color:var(--steel);font-size:.95rem;margin:.2rem 0 1.2rem;line-height:1.8}
+  .lede2 b{color:var(--ink)}
+  .uses{display:grid;grid-template-columns:1fr;gap:.9rem;margin:0}
+  @media(min-width:40rem){.uses{grid-template-columns:1fr 1fr}}
+  .use{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--rust);padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem}
+  .use h3{margin:0;font-size:1.04rem;line-height:1.5;letter-spacing:.01em}
+  .use p{margin:0;font-size:.92rem;color:var(--steel);line-height:1.8}
+  .use p b{color:var(--ink);font-weight:700}
+  .use small{color:var(--steel-pale);font-size:.82rem}
+  .use .why{font-size:.83rem;color:var(--steel);background:transparent;border-top:1px dashed var(--rule);padding:.55rem 0 0;margin:.15rem 0 0;line-height:1.7}
+  .use .why b{color:var(--rust);font-weight:700}
+  .tags2{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:auto}
+  .t2{font-size:.68rem;font-weight:700;letter-spacing:.04em;padding:.16rem .5rem;border-radius:2px}
+  .t2.real{background:var(--rust-soft);color:var(--rust);border:1px solid var(--rust)}
+  .t2.demo{background:transparent;color:var(--steel);border:1px solid var(--steel-pale)}
+
+  /* インラインSVGアイコン（線画・steel×rustの2色。currentColor+トークンで両テーマ対応） */
+  .icon{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  .hd{display:flex;gap:.85rem;align-items:center}
+  .hd h3{flex:1;min-width:0}
+  .uicon{width:2.6rem;height:2.6rem;padding:.4rem;background:var(--rust-soft);color:var(--steel)}
+  .picon{width:1.85rem;height:1.85rem;color:var(--steel)}
+  .sicon{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.2em;margin-right:.45em;color:var(--steel)}
 </style>
 </head>
 <body>
+
+<!-- アイコン定義（インラインSVGのみ・外部参照なし） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-phone" viewBox="0 0 24 24">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      <path stroke="var(--rust)" d="M15.5 6.5a2.9 2.9 0 0 1 2.5 2.5"/>
+      <path stroke="var(--rust)" d="M15.5 2.8a6.6 6.6 0 0 1 5.7 5.7"/>
+    </symbol>
+    <symbol id="ic-chat" viewBox="0 0 24 24">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+      <circle cx="8.2" cy="11.5" r="1" fill="var(--rust)" stroke="none"/>
+      <circle cx="12" cy="11.5" r="1" fill="var(--rust)" stroke="none"/>
+      <circle cx="15.8" cy="11.5" r="1" fill="var(--rust)" stroke="none"/>
+    </symbol>
+    <symbol id="ic-doc" viewBox="0 0 24 24">
+      <path d="M14 2.5H6.5a1.8 1.8 0 0 0-1.8 1.8v15.4a1.8 1.8 0 0 0 1.8 1.8h11a1.8 1.8 0 0 0 1.8-1.8V7.8z"/>
+      <path d="M14 2.5v5.3h5.3"/>
+      <path d="M8.3 12.7h5"/>
+      <path d="M8.3 16.2h3.2"/>
+      <path stroke="var(--rust)" d="M13 18.6l4.6-4.6 1.7 1.7-4.6 4.6-2.3.6z"/>
+    </symbol>
+    <symbol id="ic-photos" viewBox="0 0 24 24">
+      <path d="M7.3 4.6h11.9a1.6 1.6 0 0 1 1.6 1.6v10.2"/>
+      <rect x="3.2" y="7.6" width="14.4" height="11.8" rx="1.4"/>
+      <circle cx="7" cy="11.4" r="1.3" stroke="var(--rust)"/>
+      <path d="M4.8 16.9l3.4-3.7 2.4 2.6 2.3-2.4 2.9 3.1"/>
+    </symbol>
+    <symbol id="ic-mic" viewBox="0 0 24 24">
+      <path d="M12 2.6a2.9 2.9 0 0 1 2.9 2.9v5.6a2.9 2.9 0 0 1-5.8 0V5.5A2.9 2.9 0 0 1 12 2.6z"/>
+      <path stroke="var(--rust)" d="M18.6 11.2a6.6 6.6 0 0 1-13.2 0"/>
+      <path d="M12 17.8v3.4"/>
+      <path d="M8.6 21.2h6.8"/>
+    </symbol>
+    <symbol id="ic-mail" viewBox="0 0 24 24">
+      <rect x="2.8" y="5" width="18.4" height="14" rx="1.6"/>
+      <path stroke="var(--rust)" d="M3.4 6.2 12 13l8.6-6.8"/>
+    </symbol>
+    <symbol id="ic-grid" viewBox="0 0 24 24">
+      <rect x="3.5" y="3.5" width="6.6" height="6.6" rx=".9"/>
+      <rect x="13.9" y="3.5" width="6.6" height="6.6" rx=".9"/>
+      <rect x="3.5" y="13.9" width="6.6" height="6.6" rx=".9"/>
+      <rect x="13.9" y="13.9" width="6.6" height="6.6" rx=".9" stroke="var(--rust)"/>
+    </symbol>
+    <symbol id="ic-check" viewBox="0 0 24 24">
+      <rect x="3.8" y="3.8" width="16.4" height="16.4" rx="1.6"/>
+      <path stroke="var(--rust)" d="M8.4 12.4l2.6 2.7 4.8-5.6"/>
+    </symbol>
+    <symbol id="ic-shield" viewBox="0 0 24 24">
+      <path d="M12 2.8l7.2 2.9v5.2c0 4.6-3 7.7-7.2 9.3-4.2-1.6-7.2-4.7-7.2-9.3V5.7z"/>
+      <path stroke="var(--rust)" d="M8.9 11.7l2.3 2.3 4-4.6"/>
+    </symbol>
+    <symbol id="ic-sheet" viewBox="0 0 24 24">
+      <rect x="5" y="4.2" width="14" height="17" rx="1.6"/>
+      <rect x="8.8" y="2.4" width="6.4" height="3.4" rx="1" stroke="var(--rust)"/>
+      <path d="M8.8 11h6.4"/>
+      <path d="M8.8 14.6h6.4"/>
+      <path d="M8.8 18.2h4.2"/>
+    </symbol>
+    <symbol id="ic-build" viewBox="0 0 24 24">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      <circle cx="5.1" cy="18.9" r=".95" fill="var(--rust)" stroke="none"/>
+    </symbol>
+    <symbol id="ic-decide" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.6"/>
+      <path stroke="var(--rust)" d="M8.3 12.3l2.5 2.6 4.9-5.5"/>
+    </symbol>
+  </defs>
+</svg>
 
 <header>
   <nav class="lang" aria-label="Language">
@@ -197,11 +291,13 @@
 <main class="wrap">
 
   <section class="check">
-    <p>ひとつでも当てはまれば、話す価値があります。</p>
+    <p><svg class="icon sicon" aria-hidden="true"><use href="#ic-check"/></svg>ひとつでも当てはまれば、話す価値があります。</p>
     <ul>
-      <li>会議・打合せの議事録を、いまも手で書き起こしている</li>
-      <li>電話や問い合わせの内容を、あとから手でExcelに転記している</li>
-      <li>見積・請求のたびに、同じ情報を何度も打ち直している</li>
+      <li>接客中・作業中に<b>電話が鳴るたび、手が止まる</b>（出られない電話が売り逃しになる）</li>
+      <li>「送料は？在庫は？料金は？」の<b>同じ問い合わせに、何度も同じ返信</b>をしている</li>
+      <li>現場写真・レシート・注文FAXが<b>溜まる一方で、整理する時間がない</b></li>
+      <li>ネットショップやHPに<b>載せる文章</b>（商品説明・施工事例）を書く時間がない</li>
+      <li>会議の議事録や、電話内容のExcel転記を、いまも手でやっている</li>
       <li>「AIを入れろ」と言われたが、何から手をつければいいか分からない</li>
     </ul>
   </section>
@@ -211,8 +307,8 @@
 
     <article class="proof">
       <span class="tag">受注・納品済</span>
-      <h3>電話システム × 業務システムの連携</h3>
-      <p>電話対応が業務の中心にある企業様向け。<b>クラウド電話（Zoom Phone）の着信・通話履歴・録音を、業務システムへ自動で流し込む</b>仕組みを設計・実装し、納品しました。電話のあとに「誰と、何を話したか」を人が入力する時間が、まるごと不要になります。</p>
+      <div class="hd"><svg class="icon picon" aria-hidden="true"><use href="#ic-phone"/></svg><h3>電話システム × 業務システムの連携</h3></div>
+      <p>電話対応が業務の中心にある企業様向け。<b>クラウド電話（Zoom Phone）の着信・通話履歴・録音を、業務システムへ自動で流し込む</b>仕組みを設計・実装し、納品しました。電話のあとに「誰と、何を話したか」を人が入力する時間が、まるごと不要になります。<b>実際に有料でご導入いただいた実績のある仕組み</b>です。接客中・作業中に電話が鳴るたび手が止まる<b>小売・飲食・不動産の一次受付</b>にも、同じ技術で組み替えられます。</p>
       <div class="meta">
         <span><b>Zoom Phone API</b></span>
         <span><b>Python / Webhook</b></span>
@@ -222,7 +318,7 @@
 
     <article class="proof">
       <span class="tag live">自社で毎日稼働中</span>
-      <h3>打合せ音声 → 議事録の全自動化</h3>
+      <div class="hd"><svg class="icon picon" aria-hidden="true"><use href="#ic-mic"/></svg><h3>打合せ音声 → 議事録の全自動化</h3></div>
       <p>スマホで録音するだけ。あとはPCが勝手に文字起こしし、要点をまとめます。<b>人が触る工程はゼロ</b>。26分の会議が、放っておく間に議事録になります。オンライン会議は「自分の声」と「相手の声」を分けて記録し、誰の発言かまで残します。</p>
       <p>同じ仕組みを、<b>70代で現役の父のために</b>も作りました。父の操作は「録音を貼って、閉じる」だけ。<b>覚えることをゼロにする</b>のが、いちばん難しく、いちばん効きます。</p>
       <div class="demos">
@@ -237,7 +333,7 @@
 
     <article class="proof">
       <span class="tag live">実運用中</span>
-      <h3>メール・議事録 → 週報とタスクが勝手に埋まる</h3>
+      <div class="hd"><svg class="icon picon" aria-hidden="true"><use href="#ic-mail"/></svg><h3>メール・議事録 → 週報とタスクが勝手に埋まる</h3></div>
       <p>一週間分のメールとチャットをAIが読み、<b>週報・チームサマリー・タスク一覧を金曜に自動生成</b>します。「report_final_v3.xlsx」を金曜の夜に開く時間が、まるごと消えます。特定のAIベンダーに縛られない設計です。</p>
       <div class="demos">
         <a class="demo" href="https://westfusionai.github.io/email-thread-demo/">メール → 週報 — デモを見る</a>
@@ -251,7 +347,7 @@
 
     <article class="proof">
       <span class="tag live">14本</span>
-      <h3>現場の定型作業を消す業務ツール</h3>
+      <div class="hd"><svg class="icon picon" aria-hidden="true"><use href="#ic-grid"/></svg><h3>現場の定型作業を消す業務ツール</h3></div>
       <p>受注のために作ったものではなく、<b>自分の現場で「面倒だ」と思った瞬間に作ったもの</b>です。思いついてから動くものが出るまで、多くは数日。この速さ自体が、いちばんお見せしたい実力です。</p>
       <ul class="tools">
         <li><b>タスク管理アプリ（スマホ）</b>毎朝、その日のタスクが自動で並ぶ</li>
@@ -267,11 +363,55 @@
 
   </div>
 
+  <h2>あなたの業種なら、たとえば</h2>
+  <p class="lede2">同じ仕組みを、業種の言葉に置き換えると——。<b>小さな手間を消すと、なぜ売上・利益に効くのか</b>まで添えます。効果の数値は他社事例の目安。<b>最後の確認・ボタンは、必ず人に残します。</b></p>
+  <div class="uses">
+    <article class="use">
+      <div class="hd"><svg class="icon uicon" aria-hidden="true"><use href="#ic-phone"/></svg><h3>電話が鳴るたび、レジ・厨房・現場の手が止まる</h3></div>
+      <p><b>AIが電話の一次受け</b>をして、用件を聞き取り文字で記録。急ぎだけ通知し、折り返すかどうかは人が決めます。<br><small>小売・飲食・不動産 ほか</small></p>
+      <p class="why"><b>利益につながる理由</b>：逃していた1本の電話が、そのまま注文・予約に。折り返し漏れゼロは、そのまま売上です。</p>
+      <div class="demos"><a class="demo" href="https://westfusionai.github.io/phone-reception-demo/">AI電話一次受付 — デモを見る</a></div>
+      <div class="tags2"><span class="t2 real">有料導入の実績あり</span><span class="t2 demo">その場で体験可</span></div>
+    </article>
+    <article class="use">
+      <div class="hd"><svg class="icon uicon" aria-hidden="true"><use href="#ic-chat"/></svg><h3>「料金は？在庫は？」の同じ返信を、毎日くり返している</h3></div>
+      <p><b>LINEのAIが24時間即答</b>。答えられない質問だけ、あなたに通知して引き継ぎます。<br><small>士業・ネットショップ・製造卸 ほか</small></p>
+      <p class="why"><b>利益につながる理由</b>：夜間・休日の「待てないお客」の離脱を防ぐ。取りこぼしが、成約に変わります。</p>
+      <div class="demos"><a class="demo" href="https://westfusionai.github.io/line-reception-demo/">LINE一次受付 — デモを見る</a></div>
+      <div class="tags2"><span class="t2 real">自社で構築・運用の実績</span><span class="t2 demo">スマホで体験可</span></div>
+    </article>
+    <article class="use">
+      <div class="hd"><svg class="icon uicon" aria-hidden="true"><use href="#ic-doc"/></svg><h3>商品説明・施工事例、載せる文章を書く時間がない</h3></div>
+      <p><b>商品リストや現場写真から、AIが一括で下書き</b>。楽天・Amazon・自社サイトで文体も出し分け。載せるボタンは人。<br><small>ネットショップ・工務店 ほか</small></p>
+      <p class="why"><b>利益につながる理由</b>：載る商品・施工事例が増えるほど、検索で見つかり、買われる。発信が続けば広告費ゼロで集客できます。</p>
+      <div class="demos"><a class="demo" href="https://westfusionai.github.io/product-copy-demo/">商品説明文づくり — デモを見る</a></div>
+      <div class="tags2"><span class="t2 real">毎日の自動生成を実運用中</span><span class="t2 demo">その場で体験可</span></div>
+    </article>
+    <article class="use">
+      <div class="hd"><svg class="icon uicon" aria-hidden="true"><use href="#ic-photos"/></svg><h3>現場写真・注文FAX・レシートが、溜まる一方</h3></div>
+      <p><b>画像認識で自動で表・アルバムに</b>。施工前後アルバム、FAX注文の一覧化、領収書の仕分け。公開・確定の前の確認は人。<br><small>建設・製造卸・士業 ほか</small></p>
+      <p class="why"><b>利益につながる理由</b>：事務に消えていた時間が、接客・仕入れ・提案という「売上を生む仕事」に回ります。</p>
+      <div class="demos"><a class="demo" href="https://westfusionai.github.io/image-organize-demo/">画像・FAX自動整理 — デモを見る</a></div>
+      <div class="tags2"><span class="t2 real">画像認識の実績あり</span><span class="t2 demo">デモ可</span></div>
+    </article>
+  </div>
+
+  <section class="check">
+    <p><svg class="icon sicon" aria-hidden="true"><use href="#ic-shield"/></svg>ご相談の前に、安心のために。</p>
+    <ul>
+      <li>効果の数値はすべて<b>他社事例の目安</b>です（当方の実測ではありません）。</li>
+      <li>データの<b>保存先・外に出すか・消すか</b>は、最初のご相談で決めます。</li>
+      <li>「うちにはデータが揃っていない」でも大丈夫。<b>紙・Excelの現状から棚卸し</b>します。</li>
+      <li>費用は、<b>まず無料でデモ／一部だけ試す</b>ところから。</li>
+    </ul>
+  </section>
+
   <h2>進め方</h2>
   <ol class="steps">
-    <li><div class="step-body"><b>まず、困りごとを聞かせてください</b><span>初回相談は無料・オンライン30分。ヒアリングだけで終わっても構いません。</span></div></li>
-    <li><div class="step-body"><b>「やらないほうがいい」も言います</b><span>AIを入れる必要がない業務には、そう申し上げます。設計者として23年、無駄な作り込みが何を生むかを見てきました。</span></div></li>
-    <li><div class="step-body"><b>小さく作って、見せる</b><span>提案書ではなく動くものを見てから、進めるかどうかを判断してください。</span></div></li>
+    <li><div class="step-body"><b><svg class="icon sicon" aria-hidden="true"><use href="#ic-mail"/></svg>まず、メールで困りごとを一言</b><span>「この作業、AIでどうにかならないか」——それだけで十分です。かしこまった相談でなくて構いません。</span></div></li>
+    <li><div class="step-body"><b><svg class="icon sicon" aria-hidden="true"><use href="#ic-sheet"/></svg>簡単なヒアリングシートをお送りします</b><span>数問だけ。書ける範囲で返信いただければ、こちらで筋の良し悪しを見極めます。</span></div></li>
+    <li><div class="step-body"><b><svg class="icon sicon" aria-hidden="true"><use href="#ic-build"/></svg>小さく試作（POC）を作ってお返しします</b><span>提案書ではなく、動くもので。「やらないほうがいい」ときは、その理由を添えて正直に申し上げます。設計者として23年、無駄な作り込みが何を生むかを見てきました。</span></div></li>
+    <li><div class="step-body"><b><svg class="icon sicon" aria-hidden="true"><use href="#ic-decide"/></svg>動くものを見てから、進めるかを決めてください</b><span>試作を気に入っていただけたときだけ、次の話をします。こちらから売り込むことはしません。</span></div></li>
   </ol>
 
   <section class="contact">

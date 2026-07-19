@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>AI電話一次受付 体感デモ — WEST FUSION AI</title>
+<style>
+  :root{
+    /* 帯(ヘッダー)は両テーマとも常に濃紺で固定 */
+    --band:#0F2436;
+    --band-fg:#C3D0DA;
+    --band-fg-strong:#FFFFFF;
+    --band-muted:#93A5B3;
+    --band-rule:rgba(255,255,255,.15);
+
+    --ink:#0F2436;
+    --ink-2:#17324A;
+    --paper:#FBFBFA;
+    --rust:#D2551F;
+    --rust-soft:#F0EAE5;
+    --steel:#5F7386;
+    --steel-pale:#9DACB9;
+    --rule:rgba(15,36,54,.12);
+    --card:#FFFFFF;
+    --jp:"Yu Gothic","游ゴシック体",YuGothic,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+    --en:"Helvetica Neue",Arial,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--paper:#101820;--card:#18222C;--ink:#E6ECF1;--ink-2:#FFFFFF;--steel:#9BAEBE;--steel-pale:#6D8090;--rule:rgba(255,255,255,.12);--rust-soft:#2A2018;}
+  }
+  :root[data-theme="dark"]{--paper:#101820;--card:#18222C;--ink:#E6ECF1;--ink-2:#FFFFFF;--steel:#9BAEBE;--steel-pale:#6D8090;--rule:rgba(255,255,255,.12);--rust-soft:#2A2018;}
+  :root[data-theme="light"]{--paper:#FBFBFA;--card:#FFFFFF;--ink:#0F2436;--ink-2:#17324A;--steel:#5F7386;--steel-pale:#9DACB9;--rule:rgba(15,36,54,.12);--rust-soft:#F0EAE5;}
+
+  *{box-sizing:border-box}
+  html,body{max-width:100%;overflow-x:hidden}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--jp);line-height:1.85;
+    font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:46rem;margin:0 auto;padding:0 1.1rem 4rem}
+
+  /* header band */
+  header{
+    background:var(--band);color:var(--band-fg);
+    padding:1.9rem 0 1.7rem;margin-bottom:1.5rem;
+    border-bottom:4px solid var(--rust);
+  }
+  header .wrap{padding-bottom:0}
+  .brand{
+    font-family:var(--en);font-weight:700;font-size:.72rem;
+    letter-spacing:.3em;color:var(--band-fg-strong);margin:0 0 1rem;
+  }
+  .brand span{color:var(--rust)}
+  h1{
+    font-size:clamp(1.3rem,5vw,1.8rem);line-height:1.5;margin:0 0 .6rem;
+    letter-spacing:.02em;text-wrap:balance;color:var(--band-fg-strong);font-weight:700;
+  }
+  .lede{margin:0;color:var(--band-muted);font-size:.92rem;max-width:36rem}
+
+  /* honesty notice */
+  .notice{
+    background:var(--rust-soft);border-left:4px solid var(--rust);
+    padding:1rem 1.2rem;margin:0 0 1.75rem;font-size:.92rem;line-height:1.8;
+  }
+  .notice b{color:var(--ink)}
+  .notice p{margin:0}
+  .notice p + p{margin-top:.5rem}
+
+  h2{
+    font-size:.76rem;font-family:var(--en);letter-spacing:.2em;text-transform:uppercase;
+    color:var(--rust);margin:2.4rem 0 .9rem;font-weight:700;
+  }
+
+  /* flow diagram (お客様→AI→記録一覧) */
+  .flow{
+    background:var(--card);border:1px solid var(--rule);
+    padding:1.1rem 1rem 1.2rem;margin:0 0 1.75rem;
+    display:flex;flex-wrap:wrap;gap:.6rem .35rem;align-items:center;justify-content:center;
+  }
+  .flow-step{
+    flex:1 1 9rem;min-width:8.5rem;max-width:12.5rem;
+    display:flex;flex-direction:column;align-items:center;gap:.1rem;text-align:center;
+  }
+  .flow-icon{
+    display:flex;align-items:center;justify-content:center;
+    width:2.7rem;height:2.7rem;border-radius:50%;
+    border:1.5px solid var(--rule);background:var(--paper);margin-bottom:.3rem;
+  }
+  .flow-icon svg{width:1.65rem;height:1.65rem;display:block}
+  .flow-cust .flow-icon{color:var(--steel);border-color:var(--steel-pale)}
+  .flow-ai .flow-icon{color:var(--rust);border-color:var(--rust)}
+  .flow-rec .flow-icon{color:var(--ink);border-color:var(--rule)}
+  .flow-t{font-size:.86rem;font-weight:700;color:var(--ink);line-height:1.5}
+  .flow-s{font-size:.74rem;color:var(--steel);line-height:1.55}
+  .flow-arrow{flex:0 0 auto;color:var(--steel-pale)}
+  .flow-arrow svg{width:1.35rem;height:1rem;display:block}
+  @media (max-width:33rem){
+    .flow{flex-direction:column;gap:.35rem}
+    .flow-step{max-width:none;min-width:0;flex:0 0 auto}
+    .flow-arrow svg{transform:rotate(90deg)}
+  }
+
+  /* scenario buttons + free input */
+  .panel{
+    background:var(--card);border:1px solid var(--rule);
+    padding:1.3rem 1.2rem 1.5rem;
+  }
+  .presets{display:flex;flex-wrap:wrap;gap:.5rem;margin:.2rem 0 1.2rem}
+  .preset{
+    font-family:var(--jp);font-size:.84rem;font-weight:700;cursor:pointer;
+    color:var(--ink);background:transparent;
+    border:1.5px solid var(--ink);padding:.45rem .8rem;line-height:1.5;
+    transition:background .15s ease,color .15s ease;
+  }
+  .preset:hover,.preset:focus-visible{background:var(--ink);color:var(--paper)}
+  .preset small{display:block;font-weight:400;font-size:.72rem;color:var(--steel)}
+  .preset:hover small,.preset:focus-visible small{color:var(--paper)}
+
+  .field{margin:0}
+  label{display:block;font-size:.88rem;font-weight:700;margin-bottom:.35rem}
+  label small{font-weight:400;color:var(--steel);font-size:.78rem;margin-left:.4rem}
+  input[type="text"]{
+    width:100%;padding:.65rem .75rem;font-size:1rem;font-family:var(--jp);
+    color:var(--ink);background:var(--paper);
+    border:1px solid var(--rule);border-radius:0;appearance:auto;
+  }
+  input[type="text"]:focus-visible,button:focus-visible,a:focus-visible{
+    outline:2px solid var(--rust);outline-offset:2px;
+  }
+  .actions{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:.9rem}
+  .btn-main{
+    font-family:var(--jp);font-size:1rem;font-weight:700;cursor:pointer;
+    color:#fff;background:var(--rust);border:1.5px solid var(--rust);
+    padding:.7rem 1.6rem;letter-spacing:.05em;
+    transition:opacity .15s ease;
+  }
+  .btn-main:hover,.btn-main:focus-visible{opacity:.88}
+  .btn-sub{
+    font-family:var(--jp);font-size:.88rem;font-weight:700;cursor:pointer;
+    color:var(--ink);background:transparent;border:1.5px solid var(--ink);
+    padding:.55rem 1rem;
+    transition:background .15s ease,color .15s ease;
+  }
+  .btn-sub:hover:not(:disabled),.btn-sub:focus-visible:not(:disabled){background:var(--ink);color:var(--paper)}
+  .btn-sub:disabled{opacity:.4;cursor:not-allowed}
+  .err{color:var(--rust);font-size:.86rem;font-weight:700;margin:.6rem 0 0;min-height:1.2em}
+
+  /* call log (受話バブル) */
+  .call{
+    background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--rust);
+    padding:1rem 1rem 1.2rem;margin-top:1rem;
+  }
+  .call-head{
+    display:flex;flex-wrap:wrap;gap:.4rem 1rem;align-items:baseline;
+    padding-bottom:.6rem;border-bottom:1px dashed var(--rule);margin-bottom:.9rem;
+  }
+  .call-head .k{
+    font-family:var(--en);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--rust);font-weight:700;
+  }
+  .call-head .caller-name{font-size:.86rem;color:var(--steel)}
+  .log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.7rem}
+  .log li{max-width:88%;min-width:0}
+  .log .who{
+    display:block;font-family:var(--en);font-size:.64rem;letter-spacing:.14em;
+    text-transform:uppercase;font-weight:700;margin-bottom:.15rem;
+  }
+  .log .bubble{
+    display:inline-block;padding:.55rem .85rem;font-size:.92rem;line-height:1.75;
+    overflow-wrap:anywhere;word-break:break-word;
+  }
+  .log li.ai{align-self:flex-start}
+  .log li.ai .who{color:var(--rust)}
+  .log li.ai .bubble{
+    background:var(--rust-soft);border:1px solid var(--rule);
+    border-left:3px solid var(--rust);
+  }
+  .log li.caller{align-self:flex-end;text-align:right}
+  .log li.caller .who{color:var(--steel-pale)}
+  .log li.caller .bubble{
+    background:var(--paper);border:1px solid var(--rule);
+    border-right:3px solid var(--steel);text-align:left;
+  }
+  .log li.sys{align-self:center;max-width:100%;text-align:center}
+  .log li.sys .bubble{
+    background:transparent;border:none;padding:.1rem 0;
+    font-size:.8rem;color:var(--steel-pale);
+  }
+  /* 話者アバター（AI=左・錆 / お客様=右・steel） */
+  .log li.ai,.log li.caller{display:flex;gap:.55rem;align-items:flex-start}
+  .log li.caller{flex-direction:row-reverse}
+  .avatar{
+    flex:0 0 auto;width:2.15rem;height:2.15rem;border-radius:50%;
+    border:1.5px solid var(--rule);background:var(--card);
+    display:flex;align-items:center;justify-content:center;margin-top:.15rem;
+  }
+  .avatar svg{width:1.45rem;height:1.45rem;display:block}
+  .log li.ai .avatar{color:var(--rust);border-color:var(--rust)}
+  .log li.caller .avatar{color:var(--steel);border-color:var(--steel-pale)}
+  .msg{display:block;min-width:0}
+  .log li{animation:rise .3s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){
+    .log li{animation:none}
+    .btn-main,.btn-sub,.preset{transition:none}
+  }
+  /* 急ぎ通知の演出（静かに） */
+  .notify{
+    margin-top:.9rem;border:1.5px solid var(--rust);
+    padding:.6rem .9rem;font-size:.86rem;line-height:1.7;
+  }
+  .notify b{color:var(--rust)}
+  .notify .quiet{color:var(--steel);font-size:.8rem;display:block}
+
+  /* records table */
+  .rec-head{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:baseline;margin:0 0 .6rem}
+  .rec-head p{margin:0;font-size:.88rem;color:var(--steel)}
+  .rec-head p b{color:var(--ink)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--card)}
+  table{border-collapse:collapse;width:100%;min-width:38rem;font-size:.86rem}
+  thead th{
+    text-align:left;font-family:var(--en);font-size:.66rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--steel);font-weight:700;
+    padding:.55rem .75rem;border-bottom:2px solid var(--rule);white-space:nowrap;
+  }
+  tbody td{
+    padding:.55rem .75rem;border-bottom:1px solid var(--rule);
+    vertical-align:top;line-height:1.65;
+  }
+  tbody tr:last-child td{border-bottom:none}
+  tbody td:nth-child(1),tbody td:nth-child(2),tbody td:nth-child(4),tbody td:nth-child(6){white-space:nowrap}
+  tbody tr.is-urgent td:first-child{border-left:3px solid var(--rust)}
+  .badge{
+    display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;
+    padding:.08rem .5rem;white-space:nowrap;
+  }
+  .badge.urgent{color:#fff;background:var(--rust)}
+  .badge.later{color:var(--steel);border:1px solid var(--steel-pale)}
+  .cb-yes{font-weight:700}
+  .cb-no{color:var(--steel-pale)}
+  .empty{margin:0;padding:1rem 1.1rem;font-size:.88rem;color:var(--steel-pale)}
+
+  /* download area */
+  .dl{
+    margin-top:1.1rem;background:var(--card);border:1px solid var(--rule);
+    padding:1rem 1.2rem;display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;
+  }
+  .dl p{margin:0;font-size:.86rem;color:var(--steel);flex:1 1 14rem;line-height:1.7}
+  .dl p b{color:var(--ink)}
+
+  /* human-in-the-loop note */
+  .human{
+    margin-top:1.3rem;border:1.5px solid var(--rust);
+    padding:.9rem 1.1rem;font-size:.9rem;line-height:1.8;
+  }
+  .human b{color:var(--rust)}
+
+  /* how it works */
+  .how{font-size:.88rem;color:var(--steel);line-height:1.9}
+  .how p{margin:0 0 .7rem}
+  .how b{color:var(--ink)}
+
+  footer{margin-top:2.5rem;font-size:.78rem;color:var(--steel-pale);text-align:center;line-height:1.8}
+  footer a{color:var(--steel);text-decoration:none;border-bottom:1px solid var(--rust)}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="brand">WEST FUSION <span>AI</span></p>
+    <h1>AI電話一次受付 体感デモ</h1>
+    <p class="lede">人が出る前に、AIが用件を聞き取って文字で記録します。急ぎだけ通知、それ以外は手が空いたときに確認——その流れを画面で体感してください。</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="notice" aria-label="このデモについて">
+    <p>これは流れを<b>体感いただくデモ</b>です。実際の電話は<b>クラウド電話（Zoom Phone等）</b>につなぎます。この画面は電話網も音声認識も使っておらず、あらかじめ用意した例で動いています。</p>
+    <p><b>折り返すかどうか、最後の判断は人が行います。</b>AIが受け持つのは「聞き取って、記録して、急ぎを知らせる」まで。お客様対応の主導権は人に残します。</p>
+  </section>
+
+  <section class="flow" aria-label="全体の流れ: お客様が電話をかけると、AIが応対し、用件が文字で記録一覧に残ります">
+    <div class="flow-step flow-cust">
+      <span class="flow-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="20" cy="16" r="6.5"/>
+          <path d="M8 39c0-7.5 5.4-12.5 12-12.5 2.5 0 4.8.7 6.7 2"/>
+          <rect x="29.5" y="26.5" width="11" height="15.5" rx="2"/>
+          <path d="M33.5 38.6h3"/>
+        </svg>
+      </span>
+      <span class="flow-t">お客様が電話</span>
+      <span class="flow-s">人は出られなくてもOK</span>
+    </div>
+    <span class="flow-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h17"/><path d="M14 2.5 20 8l-6 5.5"/></svg>
+    </span>
+    <div class="flow-step flow-ai">
+      <span class="flow-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="13" y="17" width="22" height="17" rx="5"/>
+          <circle cx="19.5" cy="24.5" r="1.6" fill="currentColor" stroke="none"/>
+          <circle cx="28.5" cy="24.5" r="1.6" fill="currentColor" stroke="none"/>
+          <path d="M20 29.5h8"/>
+          <path d="M10 27v-4c0-7.7 6.3-13 14-13s14 5.3 14 13v4"/>
+          <rect x="7" y="25" width="5.5" height="9" rx="2.5"/>
+          <rect x="35.5" y="25" width="5.5" height="9" rx="2.5"/>
+          <path d="M38.5 34q0 8-10 8h-3"/>
+          <circle cx="24" cy="42" r="1.7" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      <span class="flow-t">AIが応対</span>
+      <span class="flow-s">聞き取り・復唱で確認</span>
+    </div>
+    <span class="flow-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h17"/><path d="M14 2.5 20 8l-6 5.5"/></svg>
+    </span>
+    <div class="flow-step flow-rec">
+      <span class="flow-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 9a2 2 0 0 1 2-2h13l7 7v25a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2Z"/>
+          <path d="M28 7v7h7"/>
+          <path d="M19 22h12"/><path d="M19 28h12"/><path d="M19 34h8"/>
+        </svg>
+      </span>
+      <span class="flow-t">用件が文字で記録一覧へ</span>
+      <span class="flow-s">急ぎだけ通知・最後は人が判断</span>
+    </div>
+  </section>
+
+  <h2>1. 電話がかかってくる</h2>
+
+  <div class="presets" role="group" aria-label="シナリオを選ぶ">
+    <button type="button" class="preset" data-scenario="order">
+      〈注文の電話〉<small>いつもの部品を追加で</small>
+    </button>
+    <button type="button" class="preset" data-scenario="stock">
+      〈在庫の問い合わせ〉<small>今日中に知りたい＝急ぎ</small>
+    </button>
+    <button type="button" class="preset" data-scenario="callback">
+      〈折り返し希望〉<small>担当者から電話がほしい</small>
+    </button>
+  </div>
+
+  <form id="freeForm" class="panel" novalidate>
+    <div class="field">
+      <label for="freeText">用件を自由に打つ<small>電話の相手になったつもりで</small></label>
+      <input type="text" id="freeText" autocomplete="off" placeholder="例: 先週頼んだ品の納期を教えてほしい。急ぎです。">
+    </div>
+    <div class="actions">
+      <button type="submit" class="btn-main" id="freeBtn">この用件で電話してみる</button>
+    </div>
+    <p class="err" id="err" role="alert" aria-live="polite"></p>
+  </form>
+
+  <section id="callSec" class="hidden">
+    <h2>2. AIが応対する様子</h2>
+    <div class="call">
+      <div class="call-head">
+        <span class="k">Incoming Call</span>
+        <span class="caller-name" id="callerLabel"></span>
+      </div>
+      <ol class="log" id="log" role="log" aria-live="polite"></ol>
+      <div class="notify hidden" id="notify">
+        <b>▲ 急ぎ</b>　担当者のスマホにだけ、いま通知が飛びます。<span class="quiet">急ぎでない用件は通知しません。手が空いたときに、下の記録一覧を文字で確認して折り返す運用です。</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="recSec" class="hidden">
+    <h2>3. 記録一覧 — 電話が文字で貯まる</h2>
+    <div class="rec-head">
+      <p>受け付けた電話（現在 <b id="rowCount">0</b> 件）。<b>電話に出られなくても、用件は逃しません。</b></p>
+    </div>
+    <div class="tbl-scroll" tabindex="0" aria-label="受付記録の一覧（横にスクロールできます）">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">時刻</th>
+            <th scope="col">発信者（仮名）</th>
+            <th scope="col">用件の要約</th>
+            <th scope="col">分類</th>
+            <th scope="col">急ぎ度</th>
+            <th scope="col">折り返し</th>
+          </tr>
+        </thead>
+        <tbody id="recBody"></tbody>
+      </table>
+    </div>
+
+    <div class="dl">
+      <p><b>記録はそのまま一覧でお渡しできます。</b>実案件では、業務システムやスプレッドシートへの自動転記まで含めて設計します。</p>
+      <button type="button" class="btn-sub" id="dlBtn" disabled>一覧をダウンロード（CSV / Excelで開けます）</button>
+    </div>
+
+    <p class="human">運用の芯はここです——<b>折り返すかどうか、誰が・いつ対応するかの最後の判断は、人が行います。</b>AIは一次受付と記録まで。お客様との関係を機械任せにしません。</p>
+  </section>
+
+  <h2>このデモの中身（正直な種明かし）</h2>
+  <section class="how">
+    <p>この画面は<b>ブラウザの中だけで動く再現デモ</b>で、電話網にも音声認識にもAIにもつながっていません。会話はあらかじめ用意した例文、自由入力の分類も単純なキーワード判定です。「電話を文字にして受け付け、急ぎだけ知らせる」という<b>運用の骨格</b>だけを体感いただくものです。</p>
+    <p>実際の構築では、<b>クラウド電話（Zoom Phone等）</b>と音声認識を組み合わせ、御社の電話番号で動かします。効果の数値はここではお約束しません——まず御社の電話業務を伺い、小さく試して、<b>実物を見てから</b>判断いただく進め方です。折り返しの最終判断が人に残ることは、実運用でも変わりません。</p>
+  </section>
+
+  <footer>
+    WEST FUSION AI ／ AI業務自動化<br>
+    <a href="mailto:west.fusion.ai@gmail.com">west.fusion.ai@gmail.com</a>
+  </footer>
+
+</main>
+
+<!-- 話者アバター（インラインSVGテンプレート。JSがcloneして応対ログの各バブルに付ける） -->
+<template id="tplAiAvatar">
+  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <rect x="13" y="17" width="22" height="17" rx="5"/>
+    <circle cx="19.5" cy="24.5" r="1.8" fill="currentColor" stroke="none"/>
+    <circle cx="28.5" cy="24.5" r="1.8" fill="currentColor" stroke="none"/>
+    <path d="M20 29.5h8"/>
+    <path d="M10 27v-4c0-7.7 6.3-13 14-13s14 5.3 14 13v4"/>
+    <rect x="7" y="25" width="5.5" height="9" rx="2.5"/>
+    <rect x="35.5" y="25" width="5.5" height="9" rx="2.5"/>
+    <path d="M38.5 34q0 8-10 8h-3"/>
+    <circle cx="24" cy="42" r="1.9" fill="currentColor" stroke="none"/>
+  </svg>
+</template>
+<template id="tplCallerAvatar">
+  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <circle cx="24" cy="16.5" r="7"/>
+    <path d="M10 40c0-8 6.3-13 14-13s14 5 14 13"/>
+  </svg>
+</template>
+
+<script>
+(function(){
+  "use strict";
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var STEP_MS = 1300;
+
+  /* ---------- 発信者（仮名）ローテーション ---------- */
+  var CALLERS = ["田中様", "佐藤様", "鈴木様", "高橋様", "伊藤様", "渡辺様"];
+  var callerIdx = 0;
+  function nextCaller(){
+    var name = CALLERS[callerIdx % CALLERS.length];
+    callerIdx++;
+    return name + "（仮名）";
+  }
+
+  /* ---------- シナリオ定義 ---------- */
+  // steps: {who:"ai"|"caller"|"sys", text}
+  var SCENARIOS = {
+    order: {
+      label: "注文の電話",
+      category: "注文",
+      urgent: false,
+      callback: true,
+      summary: "品番A-102を20個、追加注文。納品希望は今週金曜。",
+      callerSays: "いつもお願いしている部品の追加注文です。品番A-102を20個、今週の金曜までに納品してもらえますか。",
+      confirm: "復唱します。品番A-102を20個、今週金曜の納品ご希望で承りました。相違ないでしょうか。",
+      close: "承知しました。担当者が内容を確認のうえ、折り返しご連絡いたします。お電話ありがとうございました。"
+    },
+    stock: {
+      label: "在庫の問い合わせ",
+      category: "在庫",
+      urgent: true,
+      callback: true,
+      summary: "型番S-330の在庫有無を確認したい。今日中に回答希望＝急ぎ。",
+      callerSays: "型番S-330の在庫はありますか。今日中に分かると助かります。急ぎです。",
+      confirm: "復唱します。型番S-330の在庫確認、本日中のご回答希望＝お急ぎとして承りました。相違ないでしょうか。",
+      close: "承知しました。お急ぎのため、担当者へすぐに通知いたします。お電話ありがとうございました。"
+    },
+    callback: {
+      label: "折り返し希望",
+      category: "折り返し",
+      urgent: false,
+      callback: true,
+      summary: "見積の件で担当者から折り返し希望。急ぎではない。",
+      callerSays: "先日の見積の件で、担当の方から折り返しお電話をいただけますか。急ぎではありません。",
+      confirm: "復唱します。お見積の件で担当者からの折り返しご希望、お急ぎではないと承りました。相違ないでしょうか。",
+      close: "承知しました。担当者の手が空き次第、折り返しご連絡いたします。お電話ありがとうございました。"
+    }
+  };
+
+  /* ---------- 自由入力の簡易分類（正直な種明かし: キーワード判定のみ） ---------- */
+  function classifyFree(text){
+    var cat = "その他";
+    if (/注文|発注|追加|購入/.test(text)) cat = "注文";
+    else if (/在庫|納期|入荷|あるか|ありますか/.test(text)) cat = "在庫";
+    else if (/折り返し|折返|かけ直|電話がほしい|電話が欲しい|連絡がほしい|連絡が欲しい/.test(text)) cat = "折り返し";
+    var urgent = /急ぎ|至急|今日中|本日中|すぐ|大至急|早急/.test(text);
+    return { cat: cat, urgent: urgent };
+  }
+
+  function truncate(s, n){
+    return s.length > n ? s.slice(0, n) + "…" : s;
+  }
+
+  /* ---------- 会話ステップの逐次表示 ---------- */
+  var timers = [];
+  function clearTimers(){
+    for (var i = 0; i < timers.length; i++) clearTimeout(timers[i]);
+    timers = [];
+  }
+
+  function makeAvatar(who){
+    // 静的なSVGテンプレート(HTML内)をcloneするだけ。ユーザー入力は一切通らない
+    var tpl = $(who === "ai" ? "tplAiAvatar" : "tplCallerAvatar");
+    var span = document.createElement("span");
+    span.className = "avatar";
+    span.setAttribute("aria-hidden", "true");
+    if (tpl && tpl.content) span.appendChild(tpl.content.cloneNode(true));
+    return span;
+  }
+
+  function addLine(who, label, text){
+    var li = document.createElement("li");
+    li.className = who;
+    var box = li;
+    if (who === "ai" || who === "caller"){
+      li.appendChild(makeAvatar(who));
+      box = document.createElement("span");
+      box.className = "msg";
+      li.appendChild(box);
+    }
+    if (label){
+      var w = document.createElement("span");
+      w.className = "who";
+      w.textContent = label;
+      box.appendChild(w);
+    }
+    var b = document.createElement("span");
+    b.className = "bubble";
+    b.textContent = text;
+    box.appendChild(b);
+    $("log").appendChild(li);
+  }
+
+  function playCall(caller, sc, onDone){
+    clearTimers();
+    var log = $("log");
+    while (log.firstChild) log.removeChild(log.firstChild);
+    $("notify").classList.add("hidden");
+    $("callerLabel").textContent = caller + " からの着信（例）";
+
+    var callSec = $("callSec");
+    var wasHidden = callSec.classList.contains("hidden");
+    callSec.classList.remove("hidden");
+    if (wasHidden){
+      if (REDUCED.matches) callSec.scrollIntoView();
+      else callSec.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    var steps = [
+      { who: "sys",    label: "",       text: "着信 — AIが応答（人は電話に出ていません）" },
+      { who: "ai",     label: "AI",     text: "お電話ありがとうございます。ただいま担当者に代わり、AIがご用件を承ります。ご用件をお話しください。" },
+      { who: "caller", label: "CALLER", text: sc.callerSays },
+      { who: "ai",     label: "AI",     text: sc.confirm },
+      { who: "caller", label: "CALLER", text: "はい、それでお願いします。" },
+      { who: "ai",     label: "AI",     text: sc.close },
+      { who: "sys",    label: "",       text: "受付完了 — 下の記録一覧に1行追加されました" }
+    ];
+
+    if (REDUCED.matches){
+      for (var i = 0; i < steps.length; i++) addLine(steps[i].who, steps[i].label, steps[i].text);
+      onDone();
+      return;
+    }
+    for (var j = 0; j < steps.length; j++){
+      (function(step, idx){
+        timers.push(setTimeout(function(){
+          addLine(step.who, step.label, step.text);
+          if (idx === steps.length - 1) onDone();
+        }, idx * STEP_MS));
+      })(steps[j], j);
+    }
+  }
+
+  /* ---------- 記録一覧 ---------- */
+  var records = [];
+
+  function nowHM(){
+    var d = new Date();
+    var p = function(n){ return (n < 10 ? "0" : "") + n; };
+    return p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  function addRecord(caller, sc){
+    var rec = {
+      time: nowHM(),
+      caller: caller,
+      summary: sc.summary,
+      category: sc.category,
+      urgent: sc.urgent,
+      callback: sc.callback
+    };
+    records.push(rec);
+
+    var tr = document.createElement("tr");
+    if (rec.urgent) tr.className = "is-urgent";
+
+    var cells = [rec.time, rec.caller, rec.summary, rec.category];
+    for (var i = 0; i < cells.length; i++){
+      var td = document.createElement("td");
+      td.textContent = cells[i];
+      tr.appendChild(td);
+    }
+    var tdU = document.createElement("td");
+    var badge = document.createElement("span");
+    badge.className = rec.urgent ? "badge urgent" : "badge later";
+    badge.textContent = rec.urgent ? "急ぎ・通知済" : "あとで確認";
+    tdU.appendChild(badge);
+    tr.appendChild(tdU);
+
+    var tdC = document.createElement("td");
+    tdC.className = rec.callback ? "cb-yes" : "cb-no";
+    tdC.textContent = rec.callback ? "要" : "不要";
+    tr.appendChild(tdC);
+
+    $("recBody").appendChild(tr);
+    $("rowCount").textContent = String(records.length);
+    $("dlBtn").disabled = false;
+    $("recSec").classList.remove("hidden");
+
+    if (rec.urgent) $("notify").classList.remove("hidden");
+  }
+
+  /* ---------- シナリオボタン ---------- */
+  var presets = document.querySelectorAll(".preset");
+  for (var i = 0; i < presets.length; i++){
+    presets[i].addEventListener("click", function(){
+      var sc = SCENARIOS[this.dataset.scenario];
+      if (!sc) return;
+      $("err").textContent = "";
+      var caller = nextCaller();
+      playCall(caller, sc, function(){ addRecord(caller, sc); });
+    });
+  }
+
+  /* ---------- 自由入力 ---------- */
+  $("freeForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var text = $("freeText").value.trim();
+    if (!text){
+      $("err").textContent = "用件をひとこと入力してください。";
+      $("freeText").focus();
+      return;
+    }
+    $("err").textContent = "";
+    var cls = classifyFree(text);
+    var sc = {
+      label: "自由入力",
+      category: cls.cat,
+      urgent: cls.urgent,
+      callback: true,
+      summary: truncate(text, 40) + (cls.urgent ? "（急ぎ）" : ""),
+      callerSays: text,
+      confirm: "復唱します。「" + truncate(text, 60) + "」——" +
+               (cls.urgent ? "お急ぎのご用件として承りました。" : "承りました。") +
+               "相違ないでしょうか。",
+      close: cls.urgent
+        ? "承知しました。お急ぎのため、担当者へすぐに通知いたします。お電話ありがとうございました。"
+        : "承知しました。担当者が内容を確認のうえ、折り返しご連絡いたします。お電話ありがとうございました。"
+    };
+    var caller = nextCaller();
+    playCall(caller, sc, function(){ addRecord(caller, sc); });
+  });
+
+  /* ---------- CSV download (UTF-8 BOM: Excelでそのまま開ける) ---------- */
+  function csvField(v){
+    return '"' + String(v).replace(/"/g, '""') + '"';
+  }
+  $("dlBtn").addEventListener("click", function(){
+    if (records.length === 0) return;
+    var rows = [["受付時刻","発信者（仮名）","用件の要約","分類","急ぎ度","折り返し要否"]];
+    for (var i = 0; i < records.length; i++){
+      var r = records[i];
+      rows.push([r.time, r.caller, r.summary, r.category, r.urgent ? "急ぎ" : "通常", r.callback ? "要" : "不要"]);
+    }
+    var csv = rows.map(function(r){ return r.map(csvField).join(","); }).join("\r\n");
+    var blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "電話受付_記録一覧.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+
+})();
+</script>
+</body>
+</html>
