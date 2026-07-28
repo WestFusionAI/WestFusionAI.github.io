@@ -153,8 +153,30 @@
     border:1px solid var(--hair-strong);
     box-shadow:0 24px 60px -30px rgba(15,36,54,.35);
   }
-  .film-frame{aspect-ratio:16/9;background:#000}
+  .film-frame{aspect-ratio:16/9;background:var(--band);position:relative}
   .film-frame iframe{width:100%;height:100%;display:block;border:0}
+  /* クリック再生ファサード：公開時は外部リクエストゼロ・自ブランドのポスター。
+     クリックで初めて動画(youtube-nocookie)を読み込む＝匿名chと自動で紐づかない。 */
+  .film-play{
+    position:absolute;inset:0;width:100%;height:100%;border:0;cursor:pointer;
+    background:radial-gradient(130% 120% at 72% 18%, rgba(210,85,31,.16), transparent 58%), var(--band);
+    color:var(--band-ink);font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  }
+  .film-play::before{
+    content:"LYRIC MV";position:absolute;top:16px;left:18px;
+    font-size:10px;letter-spacing:.34em;color:var(--rust);font-weight:700;
+  }
+  .film-play .ring{
+    width:64px;height:64px;border:1.5px solid var(--rust);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease,transform .15s ease;
+  }
+  .film-play:hover .ring,.film-play:focus-visible .ring{background:rgba(210,85,31,.16);transform:scale(1.05)}
+  .film-play .pl-label{font-size:12.5px;letter-spacing:.16em;font-weight:700;color:var(--band-ink)}
+  .film-play .pl-sub{font-size:11px;letter-spacing:.12em;color:var(--band-steel);max-width:30em;text-align:center;line-height:1.7}
+  .film-play:focus-visible{outline:2px solid var(--rust);outline-offset:-4px}
+  @media (prefers-reduced-motion: reduce){.film-play .ring{transition:none}}
   .film-meta{
     display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;
     padding:16px 20px;border-top:1px solid var(--hair);
@@ -430,7 +452,11 @@
   <div class="wrap">
     <div class="film-card">
       <div class="film-frame">
-        <iframe src="https://www.youtube-nocookie.com/embed/Z0UdeGEhQZ8" title="Suno生成曲 × 歌詞同期リリックMV（自作システムで制作）" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <button type="button" class="film-play" id="filmPlay" aria-label="リリックMVを再生（クリックで動画を読み込みます）">
+          <span class="ring"><svg width="19" height="22" viewBox="0 0 19 22" fill="var(--rust)" aria-hidden="true"><path d="M0 1.4 L0 20.6 L17 11 Z"/></svg></span>
+          <span class="pl-label">クリックで再生</span>
+          <span class="pl-sub">Suno生成曲 × 歌詞同期リリックMV（自作システム）</span>
+        </button>
       </div>
       <div class="film-meta">
         <span class="tag">Exhibit&nbsp;A</span>
@@ -717,6 +743,20 @@
     btn.addEventListener('click', function(){
       root.dataset.theme = current() === 'dark' ? 'light' : 'dark';
       sync();
+    });
+  })();
+
+  // 映像は「クリックで初めて読み込む」。公開時は外部通信ゼロ、当日の再生時のみ youtube-nocookie を読み込む。
+  (function(){
+    var fp = document.getElementById('filmPlay');
+    if(!fp) return;
+    fp.addEventListener('click', function(){
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/Z0UdeGEhQZ8?autoplay=1&rel=0';
+      f.title = 'Suno生成曲 × 歌詞同期リリックMV（自作システムで制作）';
+      f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+      f.setAttribute('allowfullscreen', '');
+      fp.parentNode.replaceChild(f, fp);
     });
   })();
 </script>
