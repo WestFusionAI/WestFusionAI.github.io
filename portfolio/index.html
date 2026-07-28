@@ -452,21 +452,29 @@
   <div class="wrap">
     <div class="film-card">
       <div class="film-frame">
-        <a class="film-play" href="https://youtu.be/Z0UdeGEhQZ8" target="_blank" rel="noopener" aria-label="リリックMVをYouTubeで開く（別タブ）">
-          <span class="ring"><svg width="19" height="22" viewBox="0 0 19 22" fill="var(--rust)" aria-hidden="true"><path d="M0 1.4 L0 20.6 L17 11 Z"/></svg></span>
-          <span class="pl-label">動画を見る（別タブで開く）</span>
-          <span class="pl-sub">Suno生成曲 × 歌詞同期リリックMV（自作システム）</span>
-        </a>
+        <video id="reelvid" src="../hero_reel.mp4" autoplay muted loop playsinline preload="metadata" style="width:100%;height:100%;display:block;object-fit:cover"></video>
+        <button id="reelSound" type="button" aria-label="音ありで最初から再生" style="position:absolute;right:.7rem;bottom:.7rem;font:inherit;font-size:.78rem;font-weight:700;color:#fff;background:rgba(15,36,54,.72);border:1px solid rgba(255,255,255,.28);padding:.4rem .82rem;border-radius:999px;cursor:pointer">🔊 音ありで見る</button>
       </div>
       <div class="film-meta">
-        <span class="tag">Exhibit&nbsp;A</span>
-        <b>歌詞同期リリックMV</b>
-        <span>Suno生成曲 → 歌詞タイミングを音声認識で自動採取 → 自作システムで同期</span>
+        <span class="tag">Reel</span>
+        <b>WEST FUSION AI ─ 実装の相棒</b>
+        <span>小さく始めて、育てる。／ デザインは、人に。実装は、私に。</span>
       </div>
     </div>
-    <p class="film-note">※ スライドではなく、動く現物から。公開中のデモは、その場でブラウザから触れます。</p>
+    <p class="film-note">※ スライドではなく、動く現物から。この場でも触れる公開デモは下に。</p>
   </div>
 </section>
+<script>
+  (function(){
+    var v=document.getElementById('reelvid'),b=document.getElementById('reelSound');
+    if(!v||!b)return;
+    b.addEventListener('click',function(){
+      if(v.muted){v.muted=false;v.loop=false;v.currentTime=0;v.play();b.textContent='🔇 ミュート';}
+      else{v.muted=true;v.loop=true;b.textContent='🔊 音ありで見る';}
+    });
+    v.addEventListener('ended',function(){v.muted=true;v.loop=true;v.play();b.textContent='🔊 音ありで見る';});
+  })();
+</script>
 
 <!-- ============ dimension device ============ -->
 <section class="sec" style="padding-top:0">
