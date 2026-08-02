@@ -296,6 +296,10 @@
     color:#fff;background:rgba(15,36,54,.72);border:1px solid rgba(255,255,255,.28);
     padding:.42rem .82rem;border-radius:999px;cursor:pointer;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
   .reel-sound:hover,.reel-sound:focus-visible{background:var(--rust);border-color:var(--rust);outline:none}
+  .reel-more{margin:.6rem 0 0;text-align:right;font-size:.86rem}
+  .reel-more a{color:var(--rust);text-decoration:none;font-weight:700;border-bottom:1px solid transparent;padding-bottom:1px}
+  .reel-more a:hover,.reel-more a:focus-visible{border-bottom-color:var(--rust);outline:none}
+  .reel-more .sub{color:var(--ink);opacity:.62;font-weight:400}
 </style>
 <section class="reel-hero">
   <div class="wrap">
@@ -303,6 +307,7 @@
       <video id="reelvid" src="hero_reel.mp4" autoplay muted loop playsinline preload="metadata"></video>
       <button class="reel-sound" id="reelSound" type="button" aria-label="音ありで最初から再生">🔊 音ありで見る</button>
     </div>
+    <p class="reel-more"><span class="sub">この映像も、自作のパイプラインで。</span> <a href="portfolio/">作品と、仕事の幅を見る →</a></p>
   </div>
 </section>
 <script>
