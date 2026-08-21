@@ -1,0 +1,2 @@
+@import url("legal.css");
+.eyebrow{margin:0 0 .6rem;color:var(--rust);font:700 .75rem/1.4 var(--en);letter-spacing:.14em}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0}.card{background:var(--card);border:1px solid var(--rule);padding:1rem 1.1rem}.card h3{margin:0 0 .35rem;font-size:1rem}.card p,.small{color:var(--steel);font-size:.92rem}@media(max-width:40rem){.grid{grid-template-columns:1fr}}
