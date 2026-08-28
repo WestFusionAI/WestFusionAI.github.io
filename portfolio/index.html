@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>WEST FUSION AI — 西中間英樹｜実装の相棒</title>
+<title>WEST FUSION AI — ご依頼の一言と、実際に効いたところ。</title>
 <style>
   /* ================= tokens ================= */
   :root{
@@ -102,6 +102,9 @@
     display:flex;align-items:center;gap:12px;
   }
   .logo i{display:block;width:22px;height:1px;background:var(--rust)}
+  a.logo{text-decoration:none;color:inherit}
+  a.logo:hover,a.logo:focus-visible{color:var(--rust);outline:none}
+  a.logo:hover i,a.logo:focus-visible i{width:30px;transition:width .15s ease}
   .theme-btn{
     appearance:none;background:none;border:1px solid var(--band-hair);
     color:var(--band-steel);font:inherit;font-size:11px;letter-spacing:.18em;
@@ -130,6 +133,7 @@
     margin-top:32px;max-width:36em;color:var(--band-steel);
     font-size:clamp(14px,1.8vw,17px);line-height:2.1;
   }
+  .hero p.lede .hl{color:var(--band-ink);font-weight:700}
   .hero .chips{
     margin-top:40px;display:flex;flex-wrap:wrap;gap:0;
     border-top:1px solid var(--band-hair);
@@ -424,14 +428,71 @@
   .foot-back{margin:0 0 18px;font-size:13px}
   .foot-back a{color:var(--steel);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
   .foot-back a:hover,.foot-back a:focus-visible{color:var(--rust);border-bottom-color:var(--rust);outline:none}
+
+  /* ---- 差分版のために追加（10_サイトに反映する.py が挿入） ---- */
+  a.logo{text-decoration:none;color:inherit}
+  a.logo:hover,a.logo:focus-visible{color:var(--rust);outline:none}
+  .hero p.lede .hl{color:var(--band-ink);font-weight:700}
+  .dim-card{padding:clamp(24px,4vw,40px)}
+  .dim-card .dim{margin-top:0}
+  .case + .case{margin-top:clamp(20px,3vw,28px)}
+  .case .gap{
+    margin-top:22px;border:1px solid var(--hair);padding:18px 20px;
+    background:rgba(210,85,31,.07);
+    background:color-mix(in srgb, var(--card) 92%, var(--rust));
+  }
+  .case .gap p.t{
+    margin-top:0;font-size:10px;letter-spacing:.3em;color:var(--rust);
+    font-weight:700;text-transform:uppercase;
+  }
+  .case .gap p{margin-top:10px;color:var(--ink);font-size:14.5px;max-width:44em}
+  .case .gap b{font-weight:700;color:var(--ink)}
+  .said{color:var(--steel)}
+  .said::before{content:"\300c"} .said::after{content:"\300d"}
+  .case dl.row{
+    margin-top:26px;display:grid;grid-template-columns:150px 1fr;
+    gap:0 20px;border-top:1px solid var(--hair);
+  }
+  .case dl.row dt{
+    font-size:11px;letter-spacing:.22em;color:var(--rust);font-weight:700;
+    padding:16px 0 0;border-top:1px solid var(--hair);
+  }
+  .case dl.row dt:first-of-type,.case dl.row dt:first-of-type + dd{border-top:0}
+  .case dl.row dd{
+    padding:16px 0 16px;font-size:14.5px;color:var(--steel);line-height:1.9;
+    border-top:1px solid var(--hair);
+  }
+  .case dl.row dd b{color:var(--ink);font-weight:700}
+  @media (max-width:640px){
+    .case dl.row{grid-template-columns:1fr}
+    .case dl.row dt{padding-bottom:0}
+    .case dl.row dd{padding-top:6px;border-top:0}
+  }
+  .case p.price{
+    margin-top:24px;display:inline-block;border:1px solid var(--hair-strong);
+    padding:11px 18px;font-size:12.5px;letter-spacing:.06em;color:var(--steel);
+  }
+  .case p.price b{color:var(--ink);font-weight:700}
+  .owns{
+    margin-top:clamp(28px,4vw,40px);display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:1px;background:var(--hair);border:1px solid var(--hair);
+  }
+  .owns .own{background:var(--card);padding:22px 20px 20px;display:flex;flex-direction:column;gap:8px}
+  .owns .own .t{font-weight:700;font-size:15px;letter-spacing:.04em}
+  .owns .own .d{font-size:12.5px;color:var(--steel);line-height:1.75}
+  .reel-card{margin-top:clamp(28px,4vw,40px)}
+  .hand .hand-ex ol li b{display:block;margin-bottom:4px}
 </style>
 </head>
 <body>
+<!-- サイト /portfolio/ の本文だけ。頭（CSS一式＝寸法図の設計言語）は
+     10_サイトに反映する.py が現行サイトから借りてきて被せる。
+     中身の正本は 06_portfolio_public.html。ここはそれを寸法図の枠に載せ直したもの。 -->
 
-<!-- ============ header ============ -->
 <header class="top">
   <div class="topbar">
-    <div class="logo"><i></i>WEST FUSION AI</div>
+    <a class="logo" href="https://westfusionai.github.io/" aria-label="WEST FUSION AI トップへ"><i></i>WEST FUSION AI</a>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="配色を切り替える">LIGHT / DARK</button>
   </div>
 </header>
@@ -440,259 +501,213 @@
 <section class="hero">
   <div class="wrap">
     <p class="eyebrow">Portfolio&nbsp;&nbsp;/&nbsp;&nbsp;Nishinakama Hideki&nbsp;&nbsp;/&nbsp;&nbsp;2026</p>
-    <h1>デザインは、あなたに。<br><em>実装は、私に。</em></h1>
-    <p class="lede">製造業のメカ屋として23年、図面を「動くモノ」にしてきました。いまはその手つきのまま、AIでアイデアを「動くソフトウェア」にしています。クリエイターの領分は取り合わない。渡し合う。そのための、実装の相棒です。</p>
+    <h1>ご依頼の一言と、<br><em>実際に効いたところ。</em></h1>
+    <p class="lede">製造業で23年。18年、<span class="hl">図面を出して、見積もりを見て、仕様変更を飲むか突き返すかを決める側</span>にいます。<span class="hl">みなさんと同じ、発注する側です。</span><br>そのうえで、自分で作って渡します。<span class="hl">動くものを先に持っていきます。</span></p>
     <div class="chips">
-      <span><b>01</b>数日で、動かす</span>
-      <span><b>02</b>チームで、納める</span>
-      <span><b>03</b>映像を、巻き取る</span>
+      <span><b>01</b>動くものを、先に</span>
+      <span><b>02</b>完了・入金済み</span>
+      <span><b>03</b>初回の相談は無料</span>
     </div>
   </div>
 </section>
 
-<!-- ============ film (proof up top) ============ -->
+<!-- ============ 差分の寸法図（帯からせり出す） ============ -->
 <section class="film-pull">
   <div class="wrap">
-    <div class="film-card">
+    <div class="film-card dim-card">
+      <div class="dim">
+        <div class="dim-line">
+          <svg width="12" height="10" viewBox="0 0 12 10" aria-hidden="true"><path d="M0 5 L12 1 L12 9 Z" fill="var(--rust)"/></svg>
+          <div class="rule"></div>
+          <div class="cap"><small>NOTE</small>この差、3件。</div>
+          <div class="rule"></div>
+          <svg width="12" height="10" viewBox="0 0 12 10" aria-hidden="true"><path d="M12 5 L0 1 L0 9 Z" fill="var(--rust)"/></svg>
+        </div>
+        <div class="dim-sta">
+          <div class="sta">
+            <p class="num">01 — 見せた</p>
+            <h3>頼まれる前に、作って持参</h3>
+            <p>面談の場の雑談で出た構想を、そのまま作って持って行きました。約2週間。この案件自体の請求はゼロです。</p>
+          </div>
+          <div class="sta">
+            <p class="num">02 — 納めた</p>
+            <h3>検収まで、通した</h3>
+            <p>途中で要件が変わり、最後は「渡された側が自分の環境で動かして検収できること」が条件になりました。</p>
+          </div>
+          <div class="sta">
+            <p class="num">03 — 外れた</p>
+            <h3>デモは外れ、要望が出た</h3>
+            <p>用意した自動化は的を外しました。そのかわり、別の困りごとが相手の口から出ました。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="film-note">※ ご依頼の一言と、実際に効いたところが同じだった案件は載せていません。差が出た3件だけです。</p>
+  </div>
+</section>
+
+<!-- ============ 事例 ============ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="no">Cases</span>&nbsp;&nbsp;—&nbsp;&nbsp;事例</p>
+      <h2>「ご依頼の一言」から、<br>実際にはどこへ動いたか。</h2>
+      <p class="lead">18年、寸法線を引いてきました。だから自分の仕事も、寸法で示します。測ってほしいのは、点の高さではなく——1列目と2列目の距離です。</p>
+    </div>
+
+    <!-- CASE 01 -->
+    <div class="case">
+      <p class="kicker">Case 01&nbsp;&nbsp;/&nbsp;&nbsp;動くものを持って行った日のこと</p>
+      <h3>複数のスマートフォンを、PCから1つの窓口として使う</h3>
+
+      <div class="gap">
+        <p class="t">ご依頼の一言と、実際に効いたところ</p>
+        <p>依頼ではなく、面談の場での雑談でした。相手が持っていた構想は<span class="said">複数の携帯をPCにつないで、PC側から発信したい</span>。そのとき私は、頼まれてもいないのに<b>それを作って持って行きました。</b></p>
+      </div>
+
+      <dl class="row">
+        <dt>渡したもの</dt>
+        <dd>相談の場に、<b>動くコールセンターを持って行きました。</b>約2週間で構築。通話の部屋を電話1台ごとに分ける構成で、回線は月980円の格安SIMを使っています。</dd>
+        <dt>相手の反応</dt>
+        <dd><span class="said">2週間でここまで凄い</span>　<span class="said">月980円の回線は最強</span></dd>
+        <dt>起きたこと</dt>
+        <dd>この場から、下の CASE 02 が生まれました。<b>提案書からではなく、動くものから始まった仕事です。</b></dd>
+      </dl>
+      <p class="price">この案件自体の請求は<b>ゼロ</b>（見せただけ）</p>
+    </div>
+
+    <!-- CASE 02 -->
+    <div class="case">
+      <p class="kicker">Case 02&nbsp;&nbsp;/&nbsp;&nbsp;完了・入金済み</p>
+      <h3>クラウド電話 × 業務システム連携</h3>
+
+      <div class="gap">
+        <p class="t">ご依頼の一言と、実際に効いたところ</p>
+        <p>最初の依頼は<span class="said">運営側で電話を受けられるようにしたい</span>。進めるうちに<b>「利用企業が自社の番号から発信する」へ要件が変わり</b>、さらに<b>「渡された側が自分の環境で動かして検収できること」が条件になりました。</b></p>
+        <p>先方の技術者が最も気にされていたのは機能ではなく、<b>企業ごとにデータが混ざらないこと</b>でした。</p>
+      </div>
+
+      <dl class="row">
+        <dt>渡したもの</dt>
+        <dd>機能だけでなく、<b>構成図・画面案・データ分離の考え方を1枚の説明書</b>にして先に出しました。納品物は<b>コンテナ化し、説明書と動作確認用のデータを同梱</b>。</dd>
+        <dt>起きたこと</dt>
+        <dd><b>先方の技術者がご自分の環境で起動し、その場で検収</b>されました。「動きませんでした」のやり取りが発生していません。</dd>
+        <dt>完了</dt>
+        <dd>入金まで完了。<b>途中で止まらず最後まで通した案件です。</b></dd>
+      </dl>
+      <p class="price"><b>完了・入金済み。</b>金額は内容によるため、お会いしたときにお伝えします</p>
+    </div>
+
+    <!-- CASE 03 -->
+    <div class="case">
+      <p class="kicker">Case 03&nbsp;&nbsp;/&nbsp;&nbsp;無料相談。デモは外れ、要望が出た</p>
+      <h3>スクール運営の出欠を、連絡メールから自動で表にする</h3>
+
+      <div class="gap">
+        <p class="t">ご依頼の一言と、実際に効いたところ</p>
+        <p>こちらが用意したのは<b>出欠管理の自動化</b>でした。<b>これは外れました。</b>保護者からの連絡はメールではなく専用アプリで、既に困っていなかったからです。</p>
+        <p><b>そのかわり、別のことが相手の口から出ました。</b><span class="said">AIで何ができるのか、何を頼めばいいのかが分からない</span>。ご自分で開発ツールを触ってみたものの、<b>費用がどこまで増えるか分からず、怖くて途中でやめていた。</b></p>
+      </div>
+
+      <dl class="row">
+        <dt>渡したもの</dt>
+        <dd>動く仕組み一式。ただし作りとして、<b>判断できなかったメールは自動処理せず、印を付けて人に残します。</b>「見なくてよくなります」とは言いません。<br>当日、こちらの自動操作が権限のない画面で<b>止まる様子もそのままお見せしました。</b>勝手に踏み込まない、という説明より、止まる姿のほうが早いからです。</dd>
+        <dt>起きたこと</dt>
+        <dd>「まず自分で触ってみて、詰まったら相談したい」。<b>求められていたのは完成品ではなく、隣にいる人でした。</b><br>あわせて、お互いの得意分野でお客様を紹介し合う関係になりました。</dd>
+        <dt>そこから作った窓口</dt>
+        <dd><b>スポット伴走 ¥10,000</b>（1回60分）／<b>スタートアップ支援 ¥30,000</b>（環境を整え、雛形を一緒に動かすところまで）</dd>
+      </dl>
+      <p class="price">相談は<b>無料</b>。以降の金額は上記のとおり</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 自分で回しているもの ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="no">In Use</span>&nbsp;&nbsp;—&nbsp;&nbsp;自分で回しているもの</p>
+      <h2>作ったもの、ではなく、<br>自分がそれで回しているもの。</h2>
+      <p class="lead">すべて、自分の仕事か生活で毎日動いているものだけを挙げています。</p>
+    </div>
+    <div class="owns">
+      <div class="own">
+        <span class="t">自作のコールセンター</span>
+        <span class="d">複数のスマートフォンをPCから1つの窓口として扱う。約2週間で構築。</span>
+      </div>
+      <div class="own">
+        <span class="t">写真1枚からの一括展開</span>
+        <span class="d">1つの素材から、媒体ごとの比率に合わせて静止画16枚と動画12本を自動生成。縦で撮った写真を横で使うと頭が切れる、を切らずに出す。</span>
+      </div>
+      <div class="own">
+        <span class="t">音声の記録と文字起こしの自動化</span>
+        <span class="d">打合せの音声を自動で取り込み、文字に起こし、要点を残すところまで。毎日動いています。</span>
+      </div>
+      <div class="own">
+        <span class="t">納品前の事故防止キット</span>
+        <span class="d">AIで作ったものを外に出す前に、壊れる箇所を機械で洗い出す手順一式。自分の納品に毎回通しています。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ その場でお見せできるもの ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="no">On the spot</span>&nbsp;&nbsp;—&nbsp;&nbsp;その場でお見せできるもの</p>
+      <h2>説明より、動いているものを。</h2>
+      <p class="lead">以下はどれも数分でお見せできます。下の映像も、自作のパイプラインで作ったものです。</p>
+    </div>
+    <div class="owns">
+      <div class="own">
+        <span class="t">歌を1曲つくる</span>
+        <span class="d">歌詞・曲・歌声まで。覚えたい内容を、そのままリズムに乗せて曲にできます。声のトーンも選べます。</span>
+      </div>
+      <div class="own">
+        <span class="t">縦型のショート動画広告</span>
+        <span class="d">商品の説明文から、話す人・テロップ・音声まで含めた縦型動画を組み立てます。</span>
+      </div>
+      <div class="own">
+        <span class="t">声を写し取る</span>
+        <span class="d">短い録音から、その人の声で読み上げる。ナレーションの録り直しが要らなくなります。</span>
+      </div>
+      <div class="own">
+        <span class="t">遊べるゲーム</span>
+        <span class="d">操作して遊べるものを、まるごと1本。何がどこまで作れるのかの目安として、いちばん伝わります。</span>
+      </div>
+    </div>
+
+    <div class="film-card reel-card">
       <div class="film-frame">
         <video id="reelvid" src="../hero_reel.mp4" autoplay muted loop playsinline preload="metadata" style="width:100%;height:100%;display:block;object-fit:cover"></video>
         <button id="reelSound" type="button" aria-label="音ありで最初から再生" style="position:absolute;right:.7rem;bottom:.7rem;font:inherit;font-size:.78rem;font-weight:700;color:#fff;background:rgba(15,36,54,.72);border:1px solid rgba(255,255,255,.28);padding:.4rem .82rem;border-radius:999px;cursor:pointer">🔊 音ありで見る</button>
       </div>
       <div class="film-meta">
         <span class="tag">Reel</span>
-        <b>WEST FUSION AI ─ 実装の相棒</b>
-        <span>小さく始めて、育てる。／ デザインは、人に。実装は、私に。</span>
-      </div>
-    </div>
-    <p class="film-note">※ スライドではなく、動く現物から。この場でも触れる公開デモは下に。</p>
-  </div>
-</section>
-<script>
-  (function(){
-    var v=document.getElementById('reelvid'),b=document.getElementById('reelSound');
-    if(!v||!b)return;
-    b.addEventListener('click',function(){
-      if(v.muted){v.muted=false;v.loop=false;v.currentTime=0;v.play();b.textContent='🔇 ミュート';}
-      else{v.muted=true;v.loop=true;b.textContent='🔊 音ありで見る';}
-    });
-    v.addEventListener('ended',function(){v.muted=true;v.loop=true;v.play();b.textContent='🔊 音ありで見る';});
-  })();
-</script>
-
-<!-- ============ dimension device ============ -->
-<section class="sec" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow"><span class="no">Dimension</span>&nbsp;&nbsp;—&nbsp;&nbsp;幅の寸法図</p>
-      <h2>小さな自動化から、企業システム、映像まで。</h2>
-      <p class="lead">18年、寸法線を引いてきました。だから自分の仕事も、寸法で示します。測ってほしいのは、点の高さではなく——両端の距離です。</p>
-    </div>
-
-    <div class="dim">
-      <div class="dim-line">
-        <svg width="12" height="10" viewBox="0 0 12 10" aria-hidden="true"><path d="M0 5 L12 1 L12 9 Z" fill="var(--rust)"/></svg>
-        <div class="rule"></div>
-        <div class="cap"><small>NOTE</small>この幅、一人。</div>
-        <div class="rule"></div>
-        <svg width="12" height="10" viewBox="0 0 12 10" aria-hidden="true"><path d="M12 5 L0 1 L0 9 Z" fill="var(--rust)"/></svg>
-      </div>
-      <div class="dim-sta">
-        <div class="sta">
-          <p class="num">01 — 動かす</p>
-          <h3>数日で、動くものに</h3>
-          <p>現場で「面倒だ」と思った瞬間に作る。内製ツール14本、うち7本は公開デモ。</p>
-        </div>
-        <div class="sta">
-          <p class="num">02 — 納める</p>
-          <h3>チームで、企業案件を</h3>
-          <p>クラウド電話×業務システムの連携開発。受注・納品済・有料導入。GitHubでのチーム開発。</p>
-        </div>
-        <div class="sta">
-          <p class="num">03 — 巻き取る</p>
-          <h3>映像の量産を、AIで</h3>
-          <p>生成曲から歌詞同期MVまで自作システムで。企画・台本はプロと組み、重い部分を引き受ける。</p>
-        </div>
+        <b>歌詞の同期まで、手で打っていません</b>
+        <span>曲の生成から完成まで、一本の自作パイプラインが通っています。</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ stage 01 ============ -->
-<section class="sec">
-  <div class="wrap">
-    <div class="stage-head">
-      <span class="n">01</span>
-      <h2>動かす — 思いついた自動化を、数日で。</h2>
-      <p class="sub">自分の現場で「これは面倒だ」と感じた瞬間に、そのまま作る。企画書もベンダー選定も挟まない距離の近さが、この14本を生みました。うち7本は、いま・この場で・ブラウザから触れます。</p>
-    </div>
-
-    <div class="demos">
-      <a class="demo" href="https://westfusionai.github.io/ai-meeting-memo-father-demo/" target="_blank" rel="noopener">
-        <span class="t">父のための議事録
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 10 L10 3 M4.5 3 H10 V8.5"/></svg>
-        </span>
-        <span class="d">話した内容を、あとから読み返せる記録に。</span>
-        <span class="live">Live Demo</span>
-      </a>
-      <a class="demo" href="https://westfusionai.github.io/email-thread-demo/" target="_blank" rel="noopener">
-        <span class="t">メール → 週報
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 10 L10 3 M4.5 3 H10 V8.5"/></svg>
-        </span>
-        <span class="d">埋もれたスレッドを、報告の形に整える。</span>
-        <span class="live">Live Demo</span>
-      </a>
-      <a class="demo" href="https://westfusionai.github.io/weekly-report-generator-demo/" target="_blank" rel="noopener">
-        <span class="t">議事録 → 週報
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 10 L10 3 M4.5 3 H10 V8.5"/></svg>
-        </span>
-        <span class="d">会議メモから、そのまま週報の下書きへ。</span>
-        <span class="live">Live Demo</span>
-      </a>
-      <a class="demo" href="https://westfusionai.github.io/ceo-tasks-demo/" target="_blank" rel="noopener">
-        <span class="t">スマホのタスク管理
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 10 L10 3 M4.5 3 H10 V8.5"/></svg>
-        </span>
-        <span class="d">毎朝の段取りを、スマホでひと目に。</span>
-        <span class="live">Live Demo</span>
-      </a>
-      <a class="demo" href="https://westfusionai.github.io/phone-reception-demo/" target="_blank" rel="noopener">
-        <span class="t">AI電話一次受付
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 10 L10 3 M4.5 3 H10 V8.5"/></svg>
-        </span>
-        <span class="d">かかってきた電話の一次対応を、AIが受ける。</span>
-        <span class="live">Live Demo</span>
-      </a>
-      <a class="demo" href="https://westfusionai.github.io/product-copy-demo/" target="_blank" rel="noopener">
-        <span class="t">商品説明文づくり
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 10 L10 3 M4.5 3 H10 V8.5"/></svg>
-        </span>
-        <span class="d">商品情報から、説明文の案を量産する。</span>
-        <span class="live">Live Demo</span>
-      </a>
-      <a class="demo" href="https://westfusionai.github.io/image-organize-demo/" target="_blank" rel="noopener">
-        <span class="t">画像・FAX自動整理
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 10 L10 3 M4.5 3 H10 V8.5"/></svg>
-        </span>
-        <span class="d">届いた紙や画像を、自動で仕分けて名前を付ける。</span>
-        <span class="live">Live Demo</span>
-      </a>
-    </div>
-    <p class="demos-note">内製ツール14本のうち、公開できる7本。自分の実務のために作り、いまも動いています（デモは模擬データで、その場で触れます）。</p>
-  </div>
-</section>
-
-<!-- ============ stage 02 ============ -->
-<section class="sec">
-  <div class="wrap">
-    <div class="stage-head">
-      <span class="n">02</span>
-      <h2>納める — 趣味と本物の、境目を越える。</h2>
-      <p class="sub">「動いた」と「業務で使われている」の間には、深い溝があります。検収・運用・保守——その溝を越えて納めた案件が、信用の背骨です。</p>
-    </div>
-
-    <div class="case">
-      <p class="kicker">Delivered Work</p>
-      <h3>クラウド電話 Zoom Phone × 業務システム連携</h3>
-      <p>企業の電話業務と社内システムをつなぐ連携開発を受注し、納品。GitHub を介したチーム開発で進め、有料でご導入いただいた実績があります。ひとりの試作で終わらせず、実際の業務で使われる納品物にする——それがこの案件の意味です。</p>
-      <div class="facts">
-        <div><b>受注 → 納品済</b><span>Commissioned</span></div>
-        <div><b>有料導入</b><span>Paid Delivery</span></div>
-        <div><b>チーム開発</b><span>GitHub Based</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ stage 03 ============ -->
-<section class="sec">
-  <div class="wrap">
-    <div class="stage-head">
-      <span class="n">03</span>
-      <h2>巻き取る — 映像の量産を、システムにする。</h2>
-      <p class="sub">冒頭のリリックMVは、手作業のタイミング打ちをしていません。曲から完成まで、一本の自作パイプラインが通っています。縦動画の量産も同じ思想です。</p>
-    </div>
-
-    <div class="pipe">
-      <div class="node"><span class="pn">P-1</span><b>Suno で楽曲生成</b><span>AIで曲そのものをつくる</span></div>
-      <div class="arr"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M0 6 H14 M10 1.5 L15 6 L10 10.5"/></svg></div>
-      <div class="node"><span class="pn">P-2</span><b>歌詞タイミング自動採取</b><span>音声認識で一語ずつ拾う</span></div>
-      <div class="arr"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M0 6 H14 M10 1.5 L15 6 L10 10.5"/></svg></div>
-      <div class="node"><span class="pn">P-3</span><b>自作システムで同期</b><span>歌詞と映像をコードで束ねる</span></div>
-      <div class="arr"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M0 6 H14 M10 1.5 L15 6 L10 10.5"/></svg></div>
-      <div class="node"><span class="pn">P-4</span><b>リリックMV 完成</b><span>縦動画の量産にも同じ型を</span></div>
-    </div>
-
-    <div class="pact">
-      <p class="big">企画と台本は、プロと組みたい。<br>私が巻き取るのは、量産・多言語化・素材生成という「重い部分」です。</p>
-      <p class="small">作品の核——世界観・演出・言葉選び——はあなたのもの。それを百本規模へ量産する仕組み、多言語化、締切の逆算——その「重い側」を引き受けます。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ handoff ============ -->
+<!-- ============ 頼み方 ============ -->
 <section class="sec hand">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow"><span class="no" style="color:var(--rust)">Handoff</span>&nbsp;&nbsp;—&nbsp;&nbsp;渡し合いの図</p>
-      <h2>取り合わない。渡し合う。</h2>
-      <p class="lead">デザインやアイデアは出せる。でも「実装できない」で止まる——その止まった一歩を引き受けるのが、私の役どころです。</p>
+      <p class="eyebrow"><span class="no" style="color:var(--rust)">How to ask</span>&nbsp;&nbsp;—&nbsp;&nbsp;頼み方</p>
+      <h2>「これは無理だろう」と思っている作業でも、<br>一度聞かせてください。</h2>
+      <p class="lead">私自身、外には出せないと思っていた作業が実は出せた、ということを何度も経験しています。できるかできないかは、その場ではっきりお答えします。</p>
     </div>
 
-    <div class="hand-grid">
-      <div class="hand-col">
-        <h3><i></i>あなたから渡すもの</h3>
-        <ul>
-          <li>企画・世界観・演出<small>核はあなたの手に残したまま</small></li>
-          <li>デザインカンプ・ラフ・絵コンテ<small>精度は問いません。走り書きでも</small></li>
-          <li>「これ、動かせない？」の一言<small>入口はこれで十分です</small></li>
-        </ul>
-      </div>
-      <div class="hand-mid" aria-hidden="true">
-        <svg width="44" height="14" viewBox="0 0 44 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7 H40 M35 2 L41 7 L35 12"/></svg>
-        <svg width="44" height="14" viewBox="0 0 44 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M42 7 H4 M9 2 L3 7 L9 12"/></svg>
-      </div>
-      <div class="hand-col">
-        <h3><i></i>私から返すもの</h3>
-        <ul>
-          <li>数日で触れる、動くプロトタイプ<small>会議より先に、現物を置きます</small></li>
-          <li>量産と自動化の仕組み<small>一回きりで終わらせない</small></li>
-          <li>検収して引き渡せる納品物<small>運用を見据えた引き渡しまで</small></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="hand-ex">
-      <h4>たとえば、こんな渡し方</h4>
+    <div class="hand-ex" style="border-top:0;padding-top:0">
+      <h4>小さく試す段があります</h4>
       <ol>
-        <li><b>Design → Build</b>LPやツールのデザインカンプを、動くWebと業務の自動化まで。</li>
-        <li><b>Concept → Volume</b>MV・縦動画の企画を、歌詞同期・多言語化・量産パイプラインへ。</li>
-        <li><b>Idea → Demo</b>展示やイベントの構想を、その場で触れるデモ・受付システムに。</li>
+        <li><b>初回の相談</b>無料。できるか、できないかを、その場でお答えします。</li>
+        <li><b>スポット伴走 ¥10,000</b>1回60分。いま詰まっているところを一緒に見ます。</li>
+        <li><b>スタートアップ支援 ¥30,000</b>環境を整え、雛形を一緒に動かすところまで。</li>
       </ol>
-    </div>
-  </div>
-</section>
-
-<!-- ============ profile ============ -->
-<section class="sec">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow"><span class="no">Profile</span>&nbsp;&nbsp;—&nbsp;&nbsp;作成者</p>
-    </div>
-    <div class="prof">
-      <div>
-        <p class="name">西中間 英樹</p>
-        <p class="kana">NISHINAKAMA HIDEKI ／ WEST FUSION AI 代表</p>
-        <p class="body">図面と量産の世界で23年。<strong>機構設計18年・特許46件・海外赴任3年</strong>。いまも製造業の現場で、量産の判断に立ち会っています。モノが「動く」までの距離を測り続けてきたメカ屋が、AIを独学し、ソフトウェアの実装まで自分の手で届くようになりました。<br><br>だから、つくる人の言葉も、実装の言葉も、両方話せます。<strong>構想と実装のあいだの翻訳者</strong>——それがいちばん正確な肩書きだと思っています。</p>
-      </div>
-      <table class="spec">
-        <caption>Specifications</caption>
-        <tr><th>製造業</th><td>23年</td></tr>
-        <tr><th>機構設計</th><td>18年</td></tr>
-        <tr><th>特許</th><td>46件</td></tr>
-        <tr><th>海外赴任</th><td>3年</td></tr>
-        <tr><th>現場</th><td>いまも量産の現場</td></tr>
-        <tr><th>AI実装</th><td>独学 → 納品まで</td></tr>
-      </table>
     </div>
   </div>
 </section>
@@ -702,7 +717,7 @@
   <div class="wrap">
     <p class="eyebrow"><span class="no">Contact</span></p>
     <h2>「これ、AIでどうにかなる？」<br>その一言から。</h2>
-    <p>案件でなくて構いません。企画の途中の雑談、カンプ一枚、鼻歌のようなアイデア——動くかどうか、まず一緒に測りましょう。</p>
+    <p>案件でなくて構いません。かしこまった相談でなくて大丈夫です。動くかどうか、まず一緒に測りましょう。</p>
     <div class="cta">
       <a class="primary" href="mailto:west.fusion.ai@gmail.com">
         <svg width="15" height="12" viewBox="0 0 15 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="0.7" y="0.7" width="13.6" height="10.6"/><path d="M1 1.2 L7.5 6.6 L14 1.2"/></svg>
@@ -722,18 +737,18 @@
   <div class="wrap">
     <p class="foot-back"><a href="https://westfusionai.github.io/">← WEST FUSION AI トップへ（動くデモ一覧・進め方・お問い合わせ）</a></p>
     <div class="tblock" aria-label="図面表題欄ふうの奥付">
-      <div><span>図番</span><b>WFAI-PF-A</b></div>
-      <div><span>名称</span><b>幅の寸法図</b></div>
+      <div><span>図番</span><b>WFAI-PF-B</b></div>
+      <div><span>名称</span><b>差分の寸法図</b></div>
       <div><span>尺度</span><b>NTS（原寸は実物で）</b></div>
       <div><span>単位</span><b>実働</b></div>
       <div><span>作成</span><b>西中間 英樹</b></div>
       <div><span>検図</span><b>あなたの目で</b></div>
-      <div><span>日付</span><b>2026.07</b></div>
-      <div><span>版</span><b>A</b></div>
+      <div><span>日付</span><b>2026.08</b></div>
+      <div><span>版</span><b>B</b></div>
     </div>
     <div class="foot-line">
-      <span>WEST FUSION AI</span>
-      <span>© 2026 Nishinakama Hideki</span>
+      <span>掲載している事例は実際に完了または実施したものです。お客様の社名・個人名は伏せています。</span>
+      <span>&copy; 2026 Nishinakama Hideki</span>
     </div>
   </div>
 </footer>
@@ -758,7 +773,15 @@
     });
   })();
 
-  // 映像はサムネのみ埋め込み、クリックで別タブ表示（埋込はYouTube側の制限で不可＝error 153回避）。
+  (function(){
+    var v=document.getElementById('reelvid'),b=document.getElementById('reelSound');
+    if(!v||!b)return;
+    b.addEventListener('click',function(){
+      if(v.muted){v.muted=false;v.loop=false;v.currentTime=0;v.play();b.textContent='🔇 ミュート';}
+      else{v.muted=true;v.loop=true;b.textContent='🔊 音ありで見る';}
+    });
+    v.addEventListener('ended',function(){v.muted=true;v.loop=true;v.play();b.textContent='🔊 音ありで見る';});
+  })();
 </script>
 
 </body>
